@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e293b"/>
+      <stop offset="100%" style="stop-color:#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <circle cx="400" cy="360" r="180" fill="#f59e0b" opacity="0.15"/>
+  <circle cx="400" cy="360" r="140" fill="none" stroke="#f59e0b" stroke-width="6" opacity="0.6"/>
+  <circle cx="400" cy="300" r="60" fill="#94a3b8" opacity="0.9"/>
+  <path d="M290 520 Q290 400 400 400 Q510 400 510 520 L510 560 L290 560 Z" fill="#94a3b8" opacity="0.9"/>
+  <text x="400" y="700" font-family="Arial, sans-serif" font-size="44" font-weight="bold" fill="#f59e0b" text-anchor="middle">[FOTO]</text>
+  <text x="400" y="750" font-family="Arial, sans-serif" font-size="28" fill="#94a3b8" text-anchor="middle" opacity="0.7">Substitua pela foto da palestrante</text>
+</svg>
