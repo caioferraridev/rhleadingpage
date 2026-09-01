@@ -56,6 +56,9 @@ CREATE INDEX IF NOT EXISTS idx_waitlist_event_id ON waitlist(event_id);
 CREATE INDEX IF NOT EXISTS idx_waitlist_email ON waitlist(email);
 
 -- Function to safely reserve a spot (prevents race conditions)
+-- NOTE: counts active reservations (pending + confirmed) against capacity to
+-- prevent overbooking. Expired pending reservations (older than 30 minutes)
+-- are released automatically so abandoned checkouts free the spot again.
 CREATE OR REPLACE FUNCTION reserve_spot(
   p_event_id UUID,
   p_name TEXT,
@@ -65,7 +68,7 @@ CREATE OR REPLACE FUNCTION reserve_spot(
 RETURNS JSON AS $$
 DECLARE
   v_event RECORD;
-  v_confirmed_count INTEGER;
+  v_reserved_count INTEGER;
   v_registration_id UUID;
 BEGIN
   -- Lock the event row for update to prevent race conditions
@@ -82,14 +85,22 @@ BEGIN
     RETURN json_build_object('success', false, 'error', 'Event is not active');
   END IF;
 
-  -- Count confirmed registrations with a lock
-  SELECT COUNT(*) INTO v_confirmed_count
+  -- Release pending reservations older than 30 minutes (abandoned checkouts)
+  UPDATE registrations
+  SET
+    registration_status = 'cancelled',
+    updated_at = NOW()
+  WHERE event_id = p_event_id
+    AND registration_status = 'pending'
+    AND created_at < NOW() - INTERVAL '30 minutes';
+
+  -- Count active reservations (pending + confirmed) to prevent overbooking
+  SELECT COUNT(*) INTO v_reserved_count
   FROM registrations
   WHERE event_id = p_event_id
-    AND registration_status = 'confirmed'
-    AND payment_status = 'paid';
+    AND registration_status IN ('pending', 'confirmed');
 
-  IF v_confirmed_count >= v_event.capacity THEN
+  IF v_reserved_count >= v_event.capacity THEN
     RETURN json_build_object('success', false, 'error', 'No spots available', 'spots_left', 0);
   END IF;
 
@@ -101,12 +112,15 @@ BEGIN
   RETURN json_build_object(
     'success', true,
     'registration_id', v_registration_id,
-    'spots_left', v_event.capacity - v_confirmed_count - 1
+    'spots_left', v_event.capacity - v_reserved_count - 1
   );
 END;
 $$ LANGUAGE plpgsql;
 
 -- Function to confirm registration (called by webhook)
+-- Idempotent: confirming an already-confirmed registration is a no-op.
+-- Spots are guaranteed at reserve time (reserve_spot counts pending + confirmed
+-- and releases expired pendings), so a paying customer is always within capacity.
 CREATE OR REPLACE FUNCTION confirm_registration(
   p_session_id TEXT,
   p_payment_intent_id TEXT,

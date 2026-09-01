@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo } from "react";
 import Image from "next/image";
-import { Calendar, Clock, MapPin, Users, ChevronDown } from "lucide-react";
+import { Calendar, Clock, MapPin, ChevronDown, Users, GraduationCap } from "lucide-react";
 import { eventConfig } from "@/lib/event-config";
 import { formatPrice, formatDateShort, formatTime } from "@/lib/utils";
+import { SpotsIndicator } from "@/components/ui/spots-indicator";
 import type { Event } from "@/types/database";
 
 interface HeroProps {
@@ -22,85 +22,138 @@ export function Hero({ event, spotsLeft, isSoldOut, isLastSpots, loading }: Hero
     document.getElementById("inscricao")?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const badge = useMemo(() => {
-    if (isSoldOut) return { text: "VAGAS ESGOTADAS", className: "bg-red-100 text-red-700 border-red-200" };
-    if (isLastSpots) return { text: "ÚLTIMAS VAGAS", className: "bg-red-100 text-red-700 border-red-200" };
-    return { text: `${spotsLeft} VAGAS DISPONÍVEIS`, className: "bg-green-100 text-green-700 border-green-200" };
-  }, [isSoldOut, isLastSpots, spotsLeft]);
-
-  const ctaText = isSoldOut ? "VAGAS ESGOTADAS" : "QUERO GARANTIR MINHA VAGA";
-
   return (
-    <section id="topo" className="relative pt-16 md:pt-20 overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <div className="order-2 lg:order-1">
-          <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border font-bold text-xs mb-6 ${badge.className}`}>
-            <Users className="w-4 h-4" />
-            {badge.text}
-            {!isSoldOut && loading === false && (
-              <span className="font-normal">· {spotsLeft} de {event.capacity} restantes</span>
-            )}
-          </span>
+    <section
+      id="topo"
+      className="relative pt-24 md:pt-32 pb-16 md:pb-24 overflow-hidden bg-gradient-to-b from-mist via-white to-white"
+    >
+      {/* Decorative brand rings / curves (subtle, derived from logo) */}
+      <div className="absolute -top-24 -right-24 w-[28rem] h-[28rem] rounded-full bg-teal-100/40 blur-3xl pointer-events-none" aria-hidden />
+      <div className="absolute top-40 -left-32 w-80 h-80 rounded-full bg-navy-100/50 blur-3xl pointer-events-none" aria-hidden />
+      <div className="brand-ring hidden lg:block w-52 h-52 -top-10 left-[8%]" aria-hidden />
+      <div className="brand-ring hidden lg:block w-40 h-40 bottom-20 right-[4%]" aria-hidden />
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight mb-6">
-            Dê o primeiro passo na sua carreira em{" "}
-            <span className="text-amber-500">RH e Recrutamento</span>
-          </h1>
-
-          <p className="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed">
-            Palestra presencial para quem está começando ou quer começar a atuar na área
-            de RH. Aprenda na prática como funcionam os processos seletivos e o mundo do
-            recrutamento.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-3 mb-8 text-sm text-slate-700">
-            <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-4 py-3">
-              <Calendar className="w-5 h-5 text-amber-500" />
-              <span className="capitalize">{formatDateShort(event.event_date)}</span>
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-16 items-center">
+          {/* Text column */}
+          <div className="order-2 lg:order-1 animate-fade-up">
+            {/* Small brand label */}
+            <div className="flex items-center gap-2 mb-6">
+              <span className="w-6 h-6 rounded-md bg-navy flex items-center justify-center">
+                <GraduationCap className="w-4 h-4 text-teal-300" />
+              </span>
+              <span className="text-xs font-bold uppercase tracking-widest text-navy-500">
+                Academia RH · Bauru/SP
+              </span>
             </div>
-            <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-4 py-3">
-              <Clock className="w-5 h-5 text-amber-500" />
-              <span>{formatTime(event.start_time)} às {formatTime(event.end_time)}</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-4 py-3">
-              <MapPin className="w-5 h-5 text-amber-500" />
-              <span>{event.location}</span>
-            </div>
-          </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-            <div>
-              <p className="text-2xl font-bold text-slate-900">{formatPrice(event.price)}</p>
-              <p className="text-sm text-slate-500">investimento único</p>
-            </div>
-            <button
-              onClick={handleCtaClick}
-              className="bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm sm:text-base px-6 py-3.5 rounded-lg transition-colors shadow-lg shadow-amber-500/30 w-full sm:w-auto"
-            >
-              {ctaText}
-            </button>
-          </div>
-        </div>
-
-        <div className="order-1 lg:order-2 relative">
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/5] max-w-md mx-auto bg-slate-100">
-            <Image
-              src={eventConfig.speaker.imageUrl}
-              alt={eventConfig.speaker.name}
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-              priority
+            <SpotsIndicator
+              spotsLeft={spotsLeft}
+              capacity={event.capacity}
+              isSoldOut={isSoldOut}
+              isLastSpots={isLastSpots}
+              loading={loading}
             />
-            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-6">
-              <p className="text-white text-xl font-bold">{eventConfig.speaker.name}</p>
-              <p className="text-white/80 text-sm">{eventConfig.speaker.role}</p>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-black text-navy leading-[1.08] mt-6 mb-5 tracking-tight">
+              Seu primeiro passo para entrar no{" "}
+              <span className="text-brand-gradient">mundo do RH</span> começa aqui.
+            </h1>
+
+            <p className="text-lg md:text-xl text-navy-600/80 leading-relaxed max-w-xl mb-8">
+              Uma palestra presencial para quem está começando ou quer atuar com RH e
+              recrutamento. Na prática, você vai entender como funcionam os processos
+              seletivos — e como conquistar sua primeira oportunidade.
+            </p>
+
+            {/* Event meta */}
+            <div className="flex flex-wrap gap-3 mb-9 text-sm text-navy-700">
+              <div className="flex items-center gap-2.5 bg-white border border-navy-100 rounded-xl px-4 py-3 shadow-sm">
+                <span className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center">
+                  <Calendar className="w-4 h-4 text-teal-600" />
+                </span>
+                <span className="capitalize font-semibold">{formatDateShort(event.event_date)}</span>
+              </div>
+              <div className="flex items-center gap-2.5 bg-white border border-navy-100 rounded-xl px-4 py-3 shadow-sm">
+                <span className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center">
+                  <Clock className="w-4 h-4 text-teal-600" />
+                </span>
+                <span className="font-semibold">
+                  {formatTime(event.start_time)} às {formatTime(event.end_time)}
+                </span>
+              </div>
+              <div className="flex items-center gap-2.5 bg-white border border-navy-100 rounded-xl px-4 py-3 shadow-sm">
+                <span className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center">
+                  <MapPin className="w-4 h-4 text-teal-600" />
+                </span>
+                <span className="font-semibold">{event.location}</span>
+              </div>
+            </div>
+
+            {/* Price + CTA */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+              <div className="shrink-0">
+                <p className="text-3xl font-black text-navy">{formatPrice(event.price)}</p>
+                <p className="text-xs font-semibold text-navy-500 uppercase tracking-wide mt-0.5">
+                  Investimento único
+                </p>
+              </div>
+              <button
+                onClick={handleCtaClick}
+                className="btn-brand text-base px-7 py-4 w-full sm:w-auto"
+              >
+                {isSoldOut ? "VAGAS ESGOTADAS" : "QUERO GARANTIR MINHA VAGA"}
+                {!isSoldOut && <Users className="w-5 h-5" />}
+              </button>
+            </div>
+          </div>
+
+          {/* Photo column */}
+          <div className="order-1 lg:order-2 relative animate-fade-up animate-fade-up-delay-1">
+            <div className="relative max-w-sm mx-auto lg:max-w-none">
+              {/* Framed photo */}
+              <div className="relative rounded-[1.6rem] overflow-hidden shadow-[0_40px_80px_-30px_rgba(1,33,74,0.5)] border-4 border-white aspect-[4/5] bg-navy-100">
+                <Image
+                  src={eventConfig.speaker.imageUrl}
+                  alt={eventConfig.speaker.name}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  className="object-cover"
+                  priority
+                />
+                {/* Brand overlay label */}
+                <div className="absolute top-4 left-4">
+                  <span className="inline-flex items-center gap-1.5 bg-white/90 backdrop-blur rounded-full px-3 py-1.5 text-xs font-bold text-navy shadow-sm">
+                    <GraduationCap className="w-3.5 h-3.5 text-teal-600" />
+                    Academia RH
+                  </span>
+                </div>
+                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-navy-dark via-navy-dark/60 to-transparent p-6 pt-16">
+                  <p className="text-white text-xl font-bold">{eventConfig.speaker.name}</p>
+                  <p className="text-teal-200/90 text-sm font-medium">{eventConfig.speaker.role}</p>
+                </div>
+              </div>
+
+              {/* Floating price card */}
+              <div className="absolute -bottom-6 -left-4 sm:left-4 bg-white rounded-2xl border border-navy-100 shadow-xl px-5 py-3.5 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-teal-500/15 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-teal-600" />
+                </div>
+                <div>
+                  <p className="text-[0.7rem] font-bold uppercase tracking-wide text-navy-500">
+                    Vagas limitadas
+                  </p>
+                  <p className="font-black text-navy leading-tight">
+                    {loading ? "..." : `${spotsLeft} disponíveis`}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <ChevronDown className="hidden lg:block w-6 h-6 text-slate-400 mx-auto mb-8 animate-bounce" />
+      <ChevronDown className="hidden lg:block w-6 h-6 text-navy-300 mx-auto mt-14 animate-bounce" aria-hidden />
     </section>
   );
 }

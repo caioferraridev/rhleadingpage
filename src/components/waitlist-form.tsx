@@ -50,16 +50,18 @@ export function WaitlistForm({ eventId }: WaitlistFormProps) {
   };
 
   const inputClass =
-    "w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors bg-white text-slate-900";
+    "w-full px-4 py-3 rounded-lg border border-navy-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors bg-white text-navy-800 placeholder:text-navy-300";
 
   if (success) {
     return (
       <div className="text-center py-8">
-        <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
-        <h3 className="text-2xl font-bold text-slate-900 mb-2">
+        <div className="w-16 h-16 rounded-full bg-teal-50 flex items-center justify-center mx-auto mb-4">
+          <CheckCircle2 className="w-10 h-10 text-teal-600" />
+        </div>
+        <h3 className="text-xl font-black text-navy mb-2">
           Você entrou na lista de espera da Academia RH.
         </h3>
-        <p className="text-slate-600">
+        <p className="text-navy-600/80">
           Assim que uma vaga for liberada, entraremos em contato pelo e-mail informado.
         </p>
       </div>
@@ -69,7 +71,7 @@ export function WaitlistForm({ eventId }: WaitlistFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4" noValidate>
       <div>
-        <label htmlFor="w-name" className="block text-sm font-medium text-slate-700 mb-1">
+        <label htmlFor="w-name" className="block text-sm font-semibold text-navy-700 mb-1">
           Nome completo *
         </label>
         <input
@@ -87,7 +89,7 @@ export function WaitlistForm({ eventId }: WaitlistFormProps) {
       </div>
 
       <div>
-        <label htmlFor="w-email" className="block text-sm font-medium text-slate-700 mb-1">
+        <label htmlFor="w-email" className="block text-sm font-semibold text-navy-700 mb-1">
           E-mail *
         </label>
         <input
@@ -105,7 +107,7 @@ export function WaitlistForm({ eventId }: WaitlistFormProps) {
       </div>
 
       <div>
-        <label htmlFor="w-phone" className="block text-sm font-medium text-slate-700 mb-1">
+        <label htmlFor="w-phone" className="block text-sm font-semibold text-navy-700 mb-1">
           Telefone / WhatsApp
         </label>
         <input
@@ -124,11 +126,11 @@ export function WaitlistForm({ eventId }: WaitlistFormProps) {
         </div>
       )}
 
-      <Button type="submit" size="lg" loading={loading} variant="secondary" className="w-full">
+      <Button type="submit" size="lg" loading={loading} className="w-full btn-teal !shadow-none">
         {loading ? "Enviando..." : "Entrar na lista de espera"}
       </Button>
 
-      <p className="text-xs text-slate-400 text-center">
+      <p className="text-xs text-navy-400 text-center">
         Fique tranquilo(a): não enviaremos spam. Apenas te avisaremos caso uma vaga seja liberada.
       </p>
     </form>

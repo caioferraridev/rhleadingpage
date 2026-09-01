@@ -37,12 +37,12 @@ export function CheckoutForm({ onSubmit, onCancel }: CheckoutFormProps) {
   };
 
   const inputClass =
-    "w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors bg-white text-slate-900";
+    "w-full px-4 py-3 rounded-lg border border-navy-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors bg-white text-navy-800 placeholder:text-navy-300";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4" noValidate>
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">
+        <label htmlFor="name" className="block text-sm font-semibold text-navy-700 mb-1">
           Nome completo *
         </label>
         <input
@@ -60,7 +60,7 @@ export function CheckoutForm({ onSubmit, onCancel }: CheckoutFormProps) {
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+        <label htmlFor="email" className="block text-sm font-semibold text-navy-700 mb-1">
           E-mail *
         </label>
         <input
@@ -78,7 +78,7 @@ export function CheckoutForm({ onSubmit, onCancel }: CheckoutFormProps) {
       </div>
 
       <div>
-        <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-1">
+        <label htmlFor="phone" className="block text-sm font-semibold text-navy-700 mb-1">
           Telefone / WhatsApp
         </label>
         <input
@@ -97,7 +97,7 @@ export function CheckoutForm({ onSubmit, onCancel }: CheckoutFormProps) {
         </div>
       )}
 
-      <Button type="submit" size="lg" loading={loading} className="w-full">
+      <Button type="submit" size="lg" loading={loading} className="w-full btn-brand !shadow-none">
         {loading ? "Redirecionando para pagamento..." : "Ir para o pagamento seguro"}
       </Button>
 
@@ -105,13 +105,13 @@ export function CheckoutForm({ onSubmit, onCancel }: CheckoutFormProps) {
         <button
           type="button"
           onClick={onCancel}
-          className="w-full text-center text-sm text-slate-500 hover:text-slate-700 py-2"
+          className="w-full text-center text-sm text-navy-500 hover:text-navy py-2"
         >
           Voltar
         </button>
       )}
 
-      <p className="text-xs text-slate-400 text-center">
+      <p className="text-xs text-navy-400 text-center">
         Pagamento seguro processado pela Stripe. Você será redirecionado para concluir a compra.
       </p>
     </form>

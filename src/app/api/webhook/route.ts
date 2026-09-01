@@ -27,6 +27,17 @@ export async function POST(request: NextRequest) {
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
 
+    // Only confirm registrations for actually paid sessions. A completed
+    // session may still have payment_status "unpaid" (e.g. async payment or
+    // authorization failure) — those must NOT count as confirmed spots.
+    if (session.payment_status !== "paid") {
+      console.log("Checkout session not paid, skipping confirmation", {
+        session_id: session.id,
+        payment_status: session.payment_status,
+      });
+      return NextResponse.json({ received: true, skipped: "not_paid" });
+    }
+
     try {
       const supabase = getAdminClient();
       // Confirm the registration via RPC (idempotent)

@@ -126,34 +126,34 @@ export default function AdminPage() {
 
   if (authChecking) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
+      <div className="min-h-screen bg-mist flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-teal-600" />
       </div>
     );
   }
 
   if (!authed) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-mist flex items-center justify-center px-4">
         <div className="max-w-sm w-full">
-          <div className="bg-white rounded-3xl border border-slate-200 shadow-xl p-8">
-            <h1 className="text-2xl font-bold text-slate-900 mb-2 text-center">
+          <div className="bg-white rounded-3xl border border-navy-100 shadow-[0_30px_60px_-30px_rgba(1,33,74,0.4)] p-8">
+            <h1 className="text-2xl font-black text-navy mb-2 text-center">
               Painel Administrativo
             </h1>
-            <p className="text-slate-500 text-sm text-center mb-6">
+            <p className="text-navy-500 text-sm text-center mb-6">
               Área restrita · Academia RH
             </p>
 
             <form onSubmit={handleLogin} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-semibold text-navy-700 mb-1">
                   Senha de acesso
                 </label>
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-4 py-3 rounded-lg border border-navy-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-navy-800 placeholder:text-navy-300"
                   placeholder="Digite a senha"
                   required
                 />
@@ -168,7 +168,7 @@ export default function AdminPage() {
               <button
                 type="submit"
                 disabled={authLoading}
-                className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-3 rounded-lg transition-colors disabled:opacity-50"
+                className="w-full btn-brand px-6 py-3 disabled:opacity-50"
               >
                 {authLoading ? "Verificando..." : "Entrar"}
               </button>
@@ -181,18 +181,18 @@ export default function AdminPage() {
 
   if (loading && !data) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
+      <div className="min-h-screen bg-mist flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-teal-600" />
       </div>
     );
   }
 
   if (error && !data) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-mist flex items-center justify-center px-4">
         <div className="text-center">
           <p className="text-red-600 font-semibold mb-4">{error}</p>
-          <button onClick={fetchData} className="text-amber-600 font-semibold">
+          <button onClick={fetchData} className="text-teal-600 font-bold">
             Tentar novamente
           </button>
         </div>
@@ -209,35 +209,35 @@ export default function AdminPage() {
       label: "Vagas preenchidas",
       value: `${data.stats.confirmed} / ${data.event.capacity}`,
       icon: UserCheck,
-      color: "text-green-600 bg-green-50",
+      color: "text-teal-600 bg-teal-50",
     },
     {
       label: "Vagas disponíveis",
       value: `${data.stats.spots_left}`,
       icon: Users,
-      color: "text-amber-600 bg-amber-50",
+      color: "text-navy bg-navy-50",
     },
     {
       label: "Pagamentos pendentes",
       value: `${data.stats.pending}`,
       icon: Clock,
-      color: "text-slate-600 bg-slate-100",
+      color: "text-amber-600 bg-amber-50",
     },
     {
       label: "Lista de espera",
       value: `${data.stats.waitlist_count}`,
       icon: ListOrdered,
-      color: "text-blue-600 bg-blue-50",
+      color: "text-cyan-600 bg-cyan-50",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="bg-slate-900 text-white">
+    <div className="min-h-screen bg-mist">
+      <header className="bg-navy text-white">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold">Painel Administrativo</h1>
-            <p className="text-sm text-slate-400">Academia RH - {data.event.location}</p>
+            <h1 className="text-xl font-black">Painel Administrativo</h1>
+            <p className="text-sm text-navy-200">Academia RH - {data.event.location}</p>
           </div>
           <div className="flex items-center gap-3">
             <button
@@ -260,26 +260,26 @@ export default function AdminPage() {
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Event info */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-8">
+        <div className="bg-white rounded-2xl border border-navy-100 p-6 mb-8">
           <div className="flex flex-wrap gap-6 text-sm">
             <div>
-              <p className="text-xs text-slate-500 uppercase font-semibold">Evento</p>
-              <p className="font-semibold">{data.event.name}</p>
+              <p className="text-xs text-navy-500 uppercase font-bold">Evento</p>
+              <p className="font-semibold text-navy">{data.event.name}</p>
             </div>
             <div>
-              <p className="text-xs text-slate-500 uppercase font-semibold">Data</p>
-              <p className="font-semibold flex items-center gap-1">
-                <Calendar className="w-4 h-4 text-amber-500" />
+              <p className="text-xs text-navy-500 uppercase font-bold">Data</p>
+              <p className="font-semibold text-navy flex items-center gap-1">
+                <Calendar className="w-4 h-4 text-teal-600" />
                 {formatDateShort(data.event.event_date)} · {data.event.start_time}
               </p>
             </div>
             <div>
-              <p className="text-xs text-slate-500 uppercase font-semibold">Preço</p>
-              <p className="font-semibold">{formatPrice(data.event.price)}</p>
+              <p className="text-xs text-navy-500 uppercase font-bold">Preço</p>
+              <p className="font-semibold text-navy">{formatPrice(data.event.price)}</p>
             </div>
             <div>
-              <p className="text-xs text-slate-500 uppercase font-semibold">Local</p>
-              <p className="font-semibold">{data.event.location}</p>
+              <p className="text-xs text-navy-500 uppercase font-bold">Local</p>
+              <p className="font-semibold text-navy">{data.event.location}</p>
             </div>
           </div>
         </div>
@@ -289,36 +289,36 @@ export default function AdminPage() {
           {stats.map((stat) => {
             const Icon = stat.icon;
             return (
-              <div key={stat.label} className="bg-white rounded-2xl border border-slate-200 p-5">
+              <div key={stat.label} className="bg-white rounded-2xl border border-navy-100 p-5">
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${stat.color}`}>
                   <Icon className="w-5 h-5" />
                 </div>
-                <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
-                <p className="text-sm text-slate-500">{stat.label}</p>
+                <p className="text-2xl font-black text-navy">{stat.value}</p>
+                <p className="text-sm text-navy-500">{stat.label}</p>
               </div>
             );
           })}
         </div>
 
         {/* Registrations */}
-        <div className="bg-white rounded-2xl border border-slate-200 mb-8">
-          <div className="p-6 pb-4 border-b border-slate-100 flex items-center justify-between">
-            <h2 className="text-lg font-bold text-slate-900">Inscrições</h2>
-            <span className="text-sm text-slate-500">
+        <div className="bg-white rounded-2xl border border-navy-100 mb-8">
+          <div className="p-6 pb-4 border-b border-navy-100 flex items-center justify-between">
+            <h2 className="text-lg font-black text-navy">Inscrições</h2>
+            <span className="text-sm text-navy-500">
               {data.registrations.length} registros
             </span>
           </div>
 
           {data.registrations.length === 0 ? (
-            <div className="text-center py-12 text-slate-500">
-              <Users className="w-12 h-12 mx-auto mb-3 text-slate-300" />
+            <div className="text-center py-12 text-navy-500">
+              <Users className="w-12 h-12 mx-auto mb-3 text-navy-200" />
               <p>Nenhuma inscrição registrada ainda.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-left text-slate-500 text-xs uppercase">
+                  <tr className="text-left text-navy-500 text-xs uppercase">
                     <th className="px-6 py-3">Nome</th>
                     <th className="px-6 py-3">E-mail</th>
                     <th className="px-6 py-3">Status</th>
@@ -329,14 +329,14 @@ export default function AdminPage() {
                 </thead>
                 <tbody>
                   {data.registrations.map((reg) => (
-                    <tr key={reg.id} className="border-t border-slate-100">
-                      <td className="px-6 py-3 font-medium">{reg.name}</td>
-                      <td className="px-6 py-3 text-slate-500">{reg.email}</td>
+                    <tr key={reg.id} className="border-t border-navy-100">
+                      <td className="px-6 py-3 font-semibold text-navy">{reg.name}</td>
+                      <td className="px-6 py-3 text-navy-500">{reg.email}</td>
                       <td className="px-6 py-3">
                         <span
                           className={`px-2 py-1 rounded-full text-xs font-bold ${
                             reg.registration_status === "confirmed"
-                              ? "bg-green-100 text-green-700"
+                              ? "bg-teal-50 text-teal-700"
                               : reg.registration_status === "pending"
                               ? "bg-amber-100 text-amber-700"
                               : "bg-red-100 text-red-700"
@@ -353,7 +353,7 @@ export default function AdminPage() {
                         <span
                           className={`px-2 py-1 rounded-full text-xs font-bold ${
                             reg.payment_status === "paid"
-                              ? "bg-green-100 text-green-700"
+                              ? "bg-teal-50 text-teal-700"
                               : reg.payment_status === "pending"
                               ? "bg-amber-100 text-amber-700"
                               : "bg-red-100 text-red-700"
@@ -363,7 +363,7 @@ export default function AdminPage() {
                         </span>
                       </td>
                       <td className="px-6 py-3">{formatPrice(reg.amount_paid)}</td>
-                      <td className="px-6 py-3 text-slate-500">
+                      <td className="px-6 py-3 text-navy-500">
                         {new Date(reg.created_at).toLocaleDateString("pt-BR")}
                       </td>
                     </tr>
@@ -375,24 +375,24 @@ export default function AdminPage() {
         </div>
 
         {/* Waitlist */}
-        <div className="bg-white rounded-2xl border border-slate-200">
-          <div className="p-6 pb-4 border-b border-slate-100 flex items-center justify-between">
-            <h2 className="text-lg font-bold text-slate-900">Lista de espera</h2>
-            <span className="text-sm text-slate-500">
+        <div className="bg-white rounded-2xl border border-navy-100">
+          <div className="p-6 pb-4 border-b border-navy-100 flex items-center justify-between">
+            <h2 className="text-lg font-black text-navy">Lista de espera</h2>
+            <span className="text-sm text-navy-500">
               {data.waitlist.length} pessoas
             </span>
           </div>
 
           {data.waitlist.length === 0 ? (
-            <div className="text-center py-12 text-slate-500">
-              <ListOrdered className="w-12 h-12 mx-auto mb-3 text-slate-300" />
+            <div className="text-center py-12 text-navy-500">
+              <ListOrdered className="w-12 h-12 mx-auto mb-3 text-navy-200" />
               <p>Ninguém na lista de espera ainda.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-left text-slate-500 text-xs uppercase">
+                  <tr className="text-left text-navy-500 text-xs uppercase">
                     <th className="px-6 py-3">Nome</th>
                     <th className="px-6 py-3">E-mail</th>
                     <th className="px-6 py-3">Telefone</th>
@@ -402,16 +402,16 @@ export default function AdminPage() {
                 </thead>
                 <tbody>
                   {data.waitlist.map((entry) => (
-                    <tr key={entry.id} className="border-t border-slate-100">
-                      <td className="px-6 py-3 font-medium">{entry.name}</td>
-                      <td className="px-6 py-3 text-slate-500">{entry.email}</td>
-                      <td className="px-6 py-3 text-slate-500">{entry.phone || "—"}</td>
+                    <tr key={entry.id} className="border-t border-navy-100">
+                      <td className="px-6 py-3 font-semibold text-navy">{entry.name}</td>
+                      <td className="px-6 py-3 text-navy-500">{entry.email}</td>
+                      <td className="px-6 py-3 text-navy-500">{entry.phone || "—"}</td>
                       <td className="px-6 py-3">
-                        <span className="px-2 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700">
+                        <span className="px-2 py-1 rounded-full text-xs font-bold bg-cyan-50 text-cyan-700">
                           {entry.status}
                         </span>
                       </td>
-                      <td className="px-6 py-3 text-slate-500">
+                      <td className="px-6 py-3 text-navy-500">
                         {new Date(entry.created_at).toLocaleDateString("pt-BR")}
                       </td>
                     </tr>

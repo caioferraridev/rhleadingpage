@@ -1,44 +1,42 @@
 import Link from "next/link";
-import { GraduationCap, MapPin, Clock } from "lucide-react";
+import { MapPin, Clock } from "lucide-react";
+import { BrandLogo } from "@/components/ui/brand-logo";
 import { eventConfig } from "@/lib/event-config";
 
 export function Footer() {
   return (
-    <footer className="bg-slate-950 text-slate-400">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="bg-navy-dark text-navy-100/70">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center">
-                <GraduationCap className="w-5 h-5 text-amber-400" />
-              </div>
-              <span className="text-xl font-bold text-white">
-                Academia <span className="text-amber-500">RH</span>
-              </span>
-            </div>
-            <p className="text-sm leading-relaxed">
-              Palestra presencial de RH e recrutamento para iniciantes. Comece sua
-              trajetória na área com quem entende do assunto.
+            <BrandLogo variant="light" className="mb-4" />
+            <p className="text-sm leading-relaxed max-w-xs">
+              Palestra presencial de RH e recrutamento para iniciantes. Seu primeiro
+              passo para entrar no mundo do RH começa aqui.
             </p>
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-4">Informações do evento</h4>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-amber-500" />
+            <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
+              Informações do evento
+            </h4>
+            <ul className="space-y-3 text-sm">
+              <li className="flex items-center gap-2.5">
+                <Clock className="w-4 h-4 text-teal-400 shrink-0" />
                 {eventConfig.date} · {eventConfig.startTime} às {eventConfig.endTime}
               </li>
-              <li className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-amber-500" />
+              <li className="flex items-center gap-2.5">
+                <MapPin className="w-4 h-4 text-teal-400 shrink-0" />
                 {eventConfig.location} - {eventConfig.address}
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-4">Links rápidos</h4>
-            <ul className="space-y-2 text-sm">
+            <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
+              Navegação
+            </h4>
+            <ul className="space-y-2.5 text-sm">
               <li>
                 <Link href="#o-que-e" className="hover:text-white transition-colors">
                   O que é a Academia RH
@@ -58,9 +56,12 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-slate-800 mt-10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
+        <div className="border-t border-white/10 mt-12 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-navy-200/60">
           <span>© {new Date().getFullYear()} Academia RH. Todos os direitos reservados.</span>
-          <span>Bauru/SP · Evento presencial</span>
+          <span className="flex items-center gap-1.5">
+            <MapPin className="w-3.5 h-3.5 text-teal-400" />
+            Bauru/SP · Evento presencial
+          </span>
         </div>
       </div>
     </footer>
