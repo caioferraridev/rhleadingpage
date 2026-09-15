@@ -1,7 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 interface RevealProps {
   children: ReactNode;
@@ -12,11 +15,17 @@ interface RevealProps {
 
 export function Reveal({ children, className, delay = 0, as = "div" }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 40) return;
+
+    setVisible(false);
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -26,10 +35,16 @@ export function Reveal({ children, className, delay = 0, as = "div" }: RevealPro
           }
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+      { threshold: 0.08, rootMargin: "0px 0px -20px 0px" }
     );
     observer.observe(el);
-    return () => observer.disconnect();
+
+    const timeout = setTimeout(() => setVisible(true), 4000);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeout);
+    };
   }, []);
 
   const Tag = as as "div";
@@ -38,7 +53,7 @@ export function Reveal({ children, className, delay = 0, as = "div" }: RevealPro
     <Tag
       ref={ref}
       className={cn(
-        "transition-all duration-700 ease-out will-change-transform",
+        "transition-[opacity,transform] duration-700 ease-out will-change-transform",
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5",
         className
       )}

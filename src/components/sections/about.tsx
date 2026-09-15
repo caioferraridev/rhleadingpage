@@ -11,8 +11,8 @@ export function About() {
     <Section id="o-que-e" className="bg-mist">
       <Reveal>
         <SectionTitle
-          eyebrow="O que é"
-          subtitle="Uma jornada prática pelo mundo do RH, pensada para quem está começando ou quer dar o primeiro passo."
+          eyebrow="Sobre a Academia RH"
+          subtitle="Um espaço de desenvolvimento e capacitação para profissionais e empresas que desejam aprender, praticar e transformar a gestão de pessoas."
         >
           O que é a <span className="text-brand-gradient">Academia RH</span>?
         </SectionTitle>
@@ -21,11 +21,12 @@ export function About() {
       <Reveal delay={100}>
         <div className="mb-12 max-w-3xl mx-auto text-center">
           <p className="text-lg text-navy-600/80 leading-relaxed">
-            A Academia RH é uma palestra presencial exclusiva, voltada para pessoas que
-            estão começando ou querem iniciar sua trajetória na área de RH e recrutamento.
-            Em poucas horas, você vai entender como esse mercado funciona, quais as
-            principais práticas e como se posicionar para conquistar sua primeira
-            oportunidade.
+            Academia RH é um espaço de desenvolvimento e capacitação para profissionais
+            e empresas que desejam aprender, praticar e transformar a gestão de pessoas.
+          </p>
+          <p className="text-lg text-navy-600/80 leading-relaxed mt-4 font-medium">
+            Na Academia RH, conhecimento vira prática, profissionais ganham segurança e
+            empresas constroem resultados melhores por meio das pessoas.
           </p>
         </div>
       </Reveal>

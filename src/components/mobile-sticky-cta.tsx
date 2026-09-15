@@ -2,11 +2,12 @@
 
 import { useEventAvailability } from "@/lib/hooks/use-event-availability";
 import { formatPrice } from "@/lib/utils";
+import { eventConfig } from "@/lib/event-config";
 
 export function MobileStickyCta() {
   const { data, loading } = useEventAvailability();
   const isSoldOut = data?.is_sold_out ?? false;
-  const price = data?.event?.price ?? 22990;
+  const price = data?.event?.price ?? eventConfig.price;
 
   if (loading) return null;
 

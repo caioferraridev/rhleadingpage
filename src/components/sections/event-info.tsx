@@ -1,6 +1,6 @@
 import { Section, SectionTitle } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
-import { Clock, MapPin, CalendarCheck, Users } from "lucide-react";
+import { Clock, MapPin, CalendarCheck, Coffee, Users } from "lucide-react";
 import { formatDate, formatTime } from "@/lib/utils";
 import type { Event } from "@/types/database";
 
@@ -24,6 +24,12 @@ export function EventInfo({ event }: { event: Event }) {
       value: event.location,
       sub: event.address,
     },
+    {
+      icon: Coffee,
+      label: "Coffee Break",
+      value: "Incluso no evento",
+      sub: "Momento para networking e troca de experiências entre os participantes.",
+    },
   ];
 
   return (
@@ -37,23 +43,52 @@ export function EventInfo({ event }: { event: Event }) {
         </SectionTitle>
       </Reveal>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
         {items.map((item, index) => {
           const Icon = item.icon;
+          const isCoffee = item.label === "Coffee Break";
           return (
             <Reveal key={item.label} delay={index * 80}>
-              <div className="relative bg-white rounded-[1.25rem] border border-navy-100 p-8 text-center card-brand h-full">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-navy to-navy-600 flex items-center justify-center mx-auto mb-5 shadow-lg shadow-navy/20">
-                  <Icon className="w-6 h-6 text-teal-300" />
+              <div
+                className={`relative ${
+                  isCoffee
+                    ? "bg-gradient-to-br from-navy to-navy-600 text-white border-navy"
+                    : "bg-white border-navy-100"
+                } rounded-[1.25rem] border p-8 text-center card-brand h-full`}
+              >
+                <div
+                  className={`w-14 h-14 rounded-2xl mx-auto mb-5 shadow-lg flex items-center justify-center ${
+                    isCoffee
+                      ? "bg-white/10 shadow-navy/20"
+                      : "bg-gradient-to-br from-navy to-navy-600 shadow-navy/20"
+                  }`}
+                >
+                  <Icon className={`w-6 h-6 ${isCoffee ? "text-teal-300" : "text-teal-300"}`} />
                 </div>
-                <h3 className="font-black text-navy text-lg mb-1 uppercase tracking-wide text-sm">
+                <h3 className="font-black text-lg mb-1 uppercase tracking-wide text-sm opacity-90">
                   {item.label}
                 </h3>
-                <p className="text-navy-800 capitalize font-semibold text-lg leading-snug">
+                <p
+                  className={`font-semibold text-lg leading-snug ${
+                    isCoffee ? "text-white" : "text-navy-800 capitalize"
+                  }`}
+                >
                   {item.value}
                 </p>
                 {item.sub && (
-                  <p className="text-navy-500 text-sm mt-2">{item.sub}</p>
+                  <p
+                    className={`text-sm mt-2 whitespace-pre-line ${
+                      isCoffee ? "text-navy-100/80" : "text-navy-500"
+                    }`}
+                  >
+                    {item.sub}
+                  </p>
+                )}
+                {isCoffee && (
+                  <div className="mt-4 inline-flex items-center gap-2 bg-white/10 rounded-full px-4 py-1.5 text-xs font-bold text-teal-200">
+                    <Coffee className="w-3.5 h-3.5" />
+                    Destaque do evento
+                  </div>
                 )}
               </div>
             </Reveal>

@@ -2,22 +2,31 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAdminClient } from "@/lib/supabase/server";
 
 export async function GET(request: NextRequest) {
-  const sessionId = request.nextUrl.searchParams.get("session_id");
+  const paymentId =
+    request.nextUrl.searchParams.get("payment_id") ??
+    request.nextUrl.searchParams.get("collection_id");
+  const preferenceId = request.nextUrl.searchParams.get("preference_id");
 
-  if (!sessionId) {
+  if (!paymentId && !preferenceId) {
     return NextResponse.json(
-      { error: "session_id é obrigatório." },
+      { error: "Identificador do pedido é obrigatório." },
       { status: 400 }
     );
   }
 
   try {
     const supabase = getAdminClient();
-    const { data: registration, error } = await supabase
+    let query = supabase
       .from("registrations")
-      .select("*, events(name, event_date, start_time, end_time, location, address)")
-      .eq("stripe_checkout_session_id", sessionId)
-      .single();
+      .select("*, events(name, event_date, start_time, end_time, location, address)");
+
+    if (paymentId) {
+      query = query.eq("mercadopago_payment_id", paymentId);
+    } else {
+      query = query.eq("mercadopago_preference_id", preferenceId);
+    }
+
+    const { data: registration, error } = await query.single();
 
     if (error || !registration) {
       return NextResponse.json(

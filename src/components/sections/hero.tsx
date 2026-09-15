@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Calendar, Clock, MapPin, ChevronDown, Users, GraduationCap } from "lucide-react";
+import { Calendar, Clock, MapPin, ChevronDown, Users, GraduationCap, Coffee } from "lucide-react";
 import { eventConfig } from "@/lib/event-config";
 import { formatPrice, formatDateShort, formatTime } from "@/lib/utils";
 import { SpotsIndicator } from "@/components/ui/spots-indicator";
@@ -56,14 +56,14 @@ export function Hero({ event, spotsLeft, isSoldOut, isLastSpots, loading }: Hero
             />
 
             <h1 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-black text-navy leading-[1.08] mt-6 mb-5 tracking-tight">
-              Seu primeiro passo para entrar no{" "}
-              <span className="text-brand-gradient">mundo do RH</span> começa aqui.
+              Transforme a <span className="text-brand-gradient">gestão de pessoas</span>{" "}
+              e construa resultados melhores.
             </h1>
 
             <p className="text-lg md:text-xl text-navy-600/80 leading-relaxed max-w-xl mb-8">
-              Uma palestra presencial para quem está começando ou quer atuar com RH e
-              recrutamento. Na prática, você vai entender como funcionam os processos
-              seletivos — e como conquistar sua primeira oportunidade.
+              Um espaço de desenvolvimento e capacitação para quem deseja aprender,
+              praticar e transformar a gestão de pessoas. Conhecimento vira prática,
+              profissionais ganham segurança e empresas constroem resultados melhores.
             </p>
 
             {/* Event meta */}
@@ -87,6 +87,12 @@ export function Hero({ event, spotsLeft, isSoldOut, isLastSpots, loading }: Hero
                   <MapPin className="w-4 h-4 text-teal-600" />
                 </span>
                 <span className="font-semibold">{event.location}</span>
+              </div>
+              <div className="flex items-center gap-2.5 bg-teal-50 border border-teal-200 rounded-xl px-4 py-3 shadow-sm">
+                <span className="w-8 h-8 rounded-lg bg-white flex items-center justify-center">
+                  <Coffee className="w-4 h-4 text-teal-600" />
+                </span>
+                <span className="font-semibold text-teal-700">Coffee Break incluso</span>
               </div>
             </div>
 

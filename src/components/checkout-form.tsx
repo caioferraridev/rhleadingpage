@@ -31,6 +31,13 @@ export function CheckoutForm({ onSubmit, onCancel }: CheckoutFormProps) {
       const url = await onSubmit({ name, email, phone });
       window.location.href = url;
     } catch (err) {
+      if (
+        err instanceof Error &&
+        (err.message === "__NOT_AVAILABLE__" || err.message === "EVENT_NOT_AVAILABLE")
+      ) {
+        setLoading(false);
+        return;
+      }
       setError(err instanceof Error ? err.message : "Erro ao processar.");
       setLoading(false);
     }
@@ -112,7 +119,8 @@ export function CheckoutForm({ onSubmit, onCancel }: CheckoutFormProps) {
       )}
 
       <p className="text-xs text-navy-400 text-center">
-        Pagamento seguro processado pela Stripe. Você será redirecionado para concluir a compra.
+        Pagamento seguro processado pelo Mercado Pago. Você será redirecionado
+        para concluir a compra.
       </p>
     </form>
   );

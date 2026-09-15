@@ -69,6 +69,7 @@ export default async function HomePage() {
   const spotsLeft = data?.spotsLeft ?? event.capacity;
   const isSoldOut = data?.isSoldOut ?? false;
   const isLastSpots = data?.isLastSpots ?? false;
+  const loading = false;
 
   return (
     <>
@@ -79,7 +80,7 @@ export default async function HomePage() {
           spotsLeft={spotsLeft}
           isSoldOut={isSoldOut}
           isLastSpots={isLastSpots}
-          loading={!data}
+          loading={loading}
         />
         <About />
         <WhoFor />
@@ -90,7 +91,7 @@ export default async function HomePage() {
           spotsLeft={spotsLeft}
           isSoldOut={isSoldOut}
           isLastSpots={isLastSpots}
-          loading={!data}
+          loading={loading}
         />
         <FAQ />
       </main>
@@ -113,6 +114,7 @@ export default async function HomePage() {
               name: event.location,
               address: {
                 "@type": "PostalAddress",
+                streetAddress: event.address,
                 addressLocality: "Bauru",
                 addressRegion: "SP",
                 addressCountry: "BR",

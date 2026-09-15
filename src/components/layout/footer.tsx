@@ -1,7 +1,10 @@
 import Link from "next/link";
-import { MapPin, Clock } from "lucide-react";
+import { MapPin, Clock, Coffee } from "lucide-react";
 import { BrandLogo } from "@/components/ui/brand-logo";
+import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
 import { eventConfig } from "@/lib/event-config";
+import { getWhatsAppLink, getWhatsAppDisplayNumber } from "@/lib/whatsapp";
+import { formatDateShort, formatTime } from "@/lib/utils";
 
 export function Footer() {
   return (
@@ -11,8 +14,8 @@ export function Footer() {
           <div>
             <BrandLogo variant="light" className="mb-4" />
             <p className="text-sm leading-relaxed max-w-xs">
-              Palestra presencial de RH e recrutamento para iniciantes. Seu primeiro
-              passo para entrar no mundo do RH começa aqui.
+              Um espaço de desenvolvimento e capacitação para profissionais e empresas
+              que desejam aprender, praticar e transformar a gestão de pessoas.
             </p>
           </div>
 
@@ -23,11 +26,20 @@ export function Footer() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-center gap-2.5">
                 <Clock className="w-4 h-4 text-teal-400 shrink-0" />
-                {eventConfig.date} · {eventConfig.startTime} às {eventConfig.endTime}
+                {formatDateShort(eventConfig.date)} · {formatTime(eventConfig.startTime)} às{" "}
+                {formatTime(eventConfig.endTime)}
+              </li>
+              <li className="flex items-start gap-2.5">
+                <MapPin className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                <span>
+                  {eventConfig.location}
+                  <br />
+                  {eventConfig.address.split("\n").join(", ")}
+                </span>
               </li>
               <li className="flex items-center gap-2.5">
-                <MapPin className="w-4 h-4 text-teal-400 shrink-0" />
-                {eventConfig.location} - {eventConfig.address}
+                <Coffee className="w-4 h-4 text-teal-400 shrink-0" />
+                Coffee Break incluso
               </li>
             </ul>
           </div>
@@ -53,6 +65,20 @@ export function Footer() {
                 </Link>
               </li>
             </ul>
+
+            <h4 className="text-white font-semibold mt-8 mb-4 text-sm uppercase tracking-wider">
+              Atendimento
+            </h4>
+            <a
+              href={getWhatsAppLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-teal-300 hover:text-teal-200 transition-colors"
+              aria-label={`Falar com a Academia RH pelo WhatsApp (${getWhatsAppDisplayNumber()})`}
+            >
+              <WhatsAppIcon className="w-4 h-4" />
+              {getWhatsAppDisplayNumber()}
+            </a>
           </div>
         </div>
 

@@ -21,7 +21,7 @@ export function Speaker() {
       <div className="relative">
         <Reveal>
           <SectionTitle className="[&_h2]:text-white [&_p]:text-navy-100/70" eyebrow="Palestrante">
-            Conheça sua <span className="text-teal-300">palestrante</span>
+            Quem é <span className="text-teal-300">Talita Maia</span>?
           </SectionTitle>
         </Reveal>
 
@@ -29,7 +29,7 @@ export function Speaker() {
           <Reveal delay={100}>
             <div className="relative">
               <div className="absolute -inset-3 rounded-[1.8rem] bg-gradient-to-br from-teal-400/30 to-transparent" aria-hidden />
-              <div className="relative rounded-[1.5rem] overflow-hidden shadow-2xl aspect-[4/5] max-w-md mx-auto border border-white/10">
+              <div className="relative rounded-[1.5rem] overflow-hidden shadow-2xl aspect-[2/3] max-w-md mx-auto border border-white/10">
                 <Image
                   src={speaker.imageUrl}
                   alt={speaker.name}
@@ -53,7 +53,12 @@ export function Speaker() {
               </h3>
               <p className="text-teal-300 font-bold mb-7 text-lg">{speaker.role}</p>
 
-              <p className="text-navy-100/80 leading-relaxed mb-9 max-w-xl">{speaker.bio}</p>
+              <div className="space-y-4 mb-9 max-w-xl">
+                <p className="text-navy-100/80 leading-relaxed">{speaker.bioIntro}</p>
+                <p className="text-white/90 leading-relaxed font-medium border-l-2 border-teal-400 pl-4">
+                  {speaker.bioQuote}
+                </p>
+              </div>
 
               <div className="space-y-4">
                 <h4 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
@@ -78,14 +83,6 @@ export function Speaker() {
             </div>
           </Reveal>
         </div>
-
-        <Reveal delay={150}>
-          <div className="mt-12 bg-white/[0.05] border border-white/10 rounded-2xl p-6 max-w-3xl mx-auto text-center">
-            <p className="text-teal-200/90 text-sm font-semibold">
-              Informações da palestrante serão atualizadas em breve. Fique de olho!
-            </p>
-          </div>
-        </Reveal>
       </div>
     </Section>
   );

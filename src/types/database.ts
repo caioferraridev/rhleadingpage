@@ -20,8 +20,8 @@ export interface Registration {
   name: string;
   email: string;
   phone: string | null;
-  stripe_checkout_session_id: string | null;
-  stripe_payment_intent_id: string | null;
+  mercadopago_payment_id: string | null;
+  mercadopago_preference_id: string | null;
   amount_paid: number;
   payment_status: "pending" | "paid" | "failed" | "refunded";
   registration_status: "pending" | "confirmed" | "cancelled";
@@ -37,6 +37,22 @@ export interface WaitlistEntry {
   phone: string | null;
   status: "waiting" | "notified" | "registered";
   created_at: string;
+}
+
+export type EmailNotificationStatus = "pending" | "sending" | "sent" | "failed";
+
+export interface EmailNotification {
+  id: string;
+  registration_id: string;
+  email: string;
+  type: string;
+  scheduled_for: string;
+  sent_at: string | null;
+  status: EmailNotificationStatus;
+  provider_message_id: string | null;
+  error: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface EventAvailability {

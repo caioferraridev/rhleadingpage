@@ -11,7 +11,11 @@ import {
   User,
   Loader2,
   AlertCircle,
+  Coffee,
+  Users,
 } from "lucide-react";
+import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
+import { WHATSAPP_GROUP_LINK } from "@/lib/whatsapp";
 import { formatDate, formatTime } from "@/lib/utils";
 
 type RegistrationData = {
@@ -40,34 +44,56 @@ export default function SuccessPage() {
   }>({ loading: true, data: null, error: null });
 
   useEffect(() => {
-    const sessionId = new URLSearchParams(window.location.search).get("session_id");
+    const params = new URLSearchParams(window.location.search);
+    const paymentId = params.get("collection_id") ?? params.get("payment_id");
+    const preferenceId = params.get("preference_id");
 
-    if (!sessionId) {
+    if (!paymentId && !preferenceId) {
       setState({ loading: false, data: null, error: null });
       return;
     }
 
+    const query = paymentId
+      ? `payment_id=${encodeURIComponent(paymentId)}`
+      : `preference_id=${encodeURIComponent(preferenceId ?? "")}`;
+
+    let cancelled = false;
+    let attempts = 0;
+    const maxAttempts = 8;
+
     async function fetchRegistration() {
       try {
-        const res = await fetch(`/api/registration?session_id=${sessionId}`);
+        const res = await fetch(`/api/registration?${query}`);
         const json = await res.json();
 
-        if (!res.ok) {
-          setState({ loading: false, data: null, error: json.error || "Erro ao carregar." });
+        if (res.ok && json.registration?.is_confirmed) {
+          if (!cancelled) setState({ loading: false, data: json, error: null });
           return;
         }
 
-        setState({ loading: false, data: json, error: null });
+        attempts++;
+        if (attempts < maxAttempts && !cancelled) {
+          setState({ loading: true, data: null, error: null });
+          setTimeout(fetchRegistration, 3000);
+        } else {
+          if (!cancelled) setState({ loading: false, data: json.registration ? json : null, error: json.error || null });
+        }
       } catch {
-        setState({
-          loading: false,
-          data: null,
-          error: "Erro ao carregar as informações da inscrição.",
-        });
+        attempts++;
+        if (attempts < maxAttempts && !cancelled) {
+          setTimeout(fetchRegistration, 3000);
+        } else if (!cancelled) {
+          setState({
+            loading: false,
+            data: null,
+            error: "Erro ao carregar as informações da inscrição.",
+          });
+        }
       }
     }
 
     fetchRegistration();
+    return () => { cancelled = true; };
   }, []);
 
   const renderHeader = () => (
@@ -75,65 +101,100 @@ export default function SuccessPage() {
       <div className="w-20 h-20 rounded-full bg-teal-50 flex items-center justify-center mx-auto mb-6">
         <CheckCircle2 className="w-12 h-12 text-teal-600" />
       </div>
-      <h1 className="text-3xl font-black text-navy mb-3">Inscrição confirmada!</h1>
+      <h1 className="text-3xl font-black text-navy mb-3">Pagamento confirmado!</h1>
       <p className="text-navy-600/80 mb-8">
-        Sua vaga na Academia RH está garantida. Obrigado pela confiança!
+        Sua inscrição foi registrada com sucesso. Sua vaga na Academia RH está
+        garantida. Obrigado pela confiança!
       </p>
 
-      <div className="text-left bg-mist rounded-xl p-6 space-y-4 border border-navy-100">
-        {state.data && (
-          <>
-            <div className="flex items-start gap-3">
-              <User className="w-5 h-5 text-teal-600 mt-0.5" />
-              <div>
-                <p className="text-xs font-bold text-navy-500 uppercase">Inscrito</p>
-                <p className="text-navy-900 font-semibold">{state.data.registration.name}</p>
-              </div>
+      {state.data && (
+        <div className="text-left bg-mist rounded-xl p-6 space-y-4 border border-navy-100 mb-8">
+          <div className="flex items-start gap-3">
+            <User className="w-5 h-5 text-teal-600 mt-0.5" />
+            <div>
+              <p className="text-xs font-bold text-navy-500 uppercase">Inscrito</p>
+              <p className="text-navy-900 font-semibold">{state.data.registration.name}</p>
             </div>
+          </div>
 
-            <div className="flex items-start gap-3">
-              <Mail className="w-5 h-5 text-teal-600 mt-0.5" />
-              <div>
-                <p className="text-xs font-bold text-navy-500 uppercase">E-mail</p>
-                <p className="text-navy-900 font-medium break-all">{state.data.registration.email}</p>
-              </div>
+          <div className="flex items-start gap-3">
+            <Mail className="w-5 h-5 text-teal-600 mt-0.5" />
+            <div>
+              <p className="text-xs font-bold text-navy-500 uppercase">E-mail</p>
+              <p className="text-navy-900 font-medium break-all">{state.data.registration.email}</p>
             </div>
+          </div>
 
-            <div className="flex items-start gap-3">
-              <Calendar className="w-5 h-5 text-teal-600 mt-0.5" />
-              <div>
-                <p className="text-xs font-bold text-navy-500 uppercase">Evento</p>
-                <p className="text-navy-900 font-semibold">{state.data.event.name}</p>
-              </div>
+          <div className="flex items-start gap-3">
+            <Users className="w-5 h-5 text-teal-600 mt-0.5" />
+            <div>
+              <p className="text-xs font-bold text-navy-500 uppercase">Inscrição</p>
+              <p className="text-navy-900 font-semibold">{state.data.event.name}</p>
             </div>
+          </div>
 
-            <div className="flex items-start gap-3">
-              <Clock className="w-5 h-5 text-teal-600 mt-0.5" />
-              <div>
-                <p className="text-xs font-bold text-navy-500 uppercase">Data e horário</p>
-                <p className="text-navy-900 font-medium capitalize">
-                  {formatDate(state.data.event.event_date)} ·{" "}
-                  {formatTime(state.data.event.start_time)} às {formatTime(state.data.event.end_time)}
-                </p>
-              </div>
+          <div className="flex items-start gap-3">
+            <Calendar className="w-5 h-5 text-teal-600 mt-0.5" />
+            <div>
+              <p className="text-xs font-bold text-navy-500 uppercase">Data</p>
+              <p className="text-navy-900 font-medium capitalize">{formatDate(state.data.event.event_date)}</p>
             </div>
+          </div>
 
-            <div className="flex items-start gap-3">
-              <MapPin className="w-5 h-5 text-teal-600 mt-0.5" />
-              <div>
-                <p className="text-xs font-bold text-navy-500 uppercase">Local</p>
-                <p className="text-navy-900 font-semibold">
-                  {state.data.event.location}
-                  {state.data.event.address && ` - ${state.data.event.address}`}
-                </p>
-              </div>
+          <div className="flex items-start gap-3">
+            <Clock className="w-5 h-5 text-teal-600 mt-0.5" />
+            <div>
+              <p className="text-xs font-bold text-navy-500 uppercase">Horário</p>
+              <p className="text-navy-900 font-medium">
+                {formatTime(state.data.event.start_time)} às {formatTime(state.data.event.end_time)}
+              </p>
             </div>
-          </>
-        )}
+          </div>
+
+          <div className="flex items-start gap-3">
+            <MapPin className="w-5 h-5 text-teal-600 mt-0.5" />
+            <div>
+              <p className="text-xs font-bold text-navy-500 uppercase">Local</p>
+              <p className="text-navy-900 font-semibold">{state.data.event.location}</p>
+              {state.data.event.address && (
+                <p className="text-navy-700 text-sm whitespace-pre-line">{state.data.event.address}</p>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3">
+            <Coffee className="w-5 h-5 text-teal-600 mt-0.5" />
+            <div>
+              <p className="text-xs font-bold text-navy-500 uppercase">Coffee Break</p>
+              <p className="text-navy-900 font-semibold">Incluso no evento</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="bg-gradient-to-r from-navy to-navy-600 rounded-2xl p-6 md:p-7 text-left text-white">
+        <p className="text-xs font-bold uppercase tracking-widest text-teal-300 mb-2">
+          Próximo passo
+        </p>
+        <h2 className="text-xl font-black mb-2">Entre no grupo oficial da Academia RH</h2>
+        <p className="text-navy-100/80 text-sm leading-relaxed mb-5">
+          Entre no grupo oficial da Academia RH para receber informações, orientações e
+          atualizações sobre o evento.
+        </p>
+        <a
+          href={WHATSAPP_GROUP_LINK}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-teal text-base w-full py-3.5"
+          aria-label="Entrar no grupo oficial do WhatsApp da Academia RH"
+        >
+          <WhatsAppIcon className="w-5 h-5" />
+          Entrar no grupo do WhatsApp
+        </a>
       </div>
 
       <div className="mt-8 bg-teal-50 border border-teal-200 text-teal-800 rounded-xl p-4 text-sm">
-        Você receberá mais detalhes sobre o evento no seu e-mail. Se não encontrar,
+        Você também receberá mais detalhes sobre o evento no seu e-mail. Se não encontrar,
         verifique a caixa de spam.
       </div>
 

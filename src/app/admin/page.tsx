@@ -70,7 +70,7 @@ export default function AdminPage() {
         return;
       }
 
-      localStorage.setItem(AUTH_KEY, "authenticated");
+      localStorage.setItem(AUTH_KEY, password);
       setAuthed(true);
       setAuthLoading(false);
     } catch {
@@ -87,7 +87,7 @@ export default function AdminPage() {
       setLoading(true);
       setError(null);
       const res = await fetch("/api/admin", {
-        headers: { Authorization: `Bearer authenticated` },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (res.status === 401) {

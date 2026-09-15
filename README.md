@@ -1,14 +1,14 @@
 # Academia RH — Landing Page de Vendas para Evento Presencial
 
-Aplicação web completa e pronta para produção para venda de inscrições da palestra presencial **Academia RH** (Bauru/SP). Construída com **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, **Supabase** (banco de dados + segurança RLS) e **Stripe** (checkout + webhook).
+Aplicação web completa e pronta para produção para venda de inscrições da palestra presencial **Academia RH** (Bauru/SP). Construída com **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, **Supabase** (banco de dados + segurança RLS) e **Mercado Pago** (checkout + webhook).
 
 ---
 
 ## ✨ Funcionalidades
 
 - **Landing Page de alta conversão** (mobile first, responsiva, com CTA fixo no mobile).
-- **Stripe Checkout** integrado (coleta nome, e-mail e telefone antes de redirecionar).
-- **Webhook Stripe** com validação de assinatura e **processamento idempotente**.
+- **Mercado Pago Checkout Pro** integrado (coleta nome, e-mail e telefone antes de redirecionar).
+- **Webhook Mercado Pago** com validação (assinatura opcional + consulta ao pagamento na API) e **processamento idempotente**.
 - **Controle seguro das 50 vagas**: a reserva é feita no backend via uma **função RPC do PostgreSQL com `SELECT ... FOR UPDATE`** que bloqueia a linha do evento, evitando **race conditions** (duas pessoas comprando a última vaga ao mesmo tempo).
 - **Estados dinâmicos de vagas**: Disponível → Últimas vagas → Esgotado.
 - **Lista de espera** quando as 50 vagas estiverem preenchidas.
@@ -25,8 +25,8 @@ Aplicação web completa e pronta para produção para venda de inscrições da 
 |---------------|----------------------------------------------|
 | Frontend      | Next.js 16 (App Router) · React 19 · Tailwind CSS 4 · TypeScript |
 | Banco de dados| Supabase (PostgreSQL) + Row Level Security   |
-| Pagamento     | Stripe Checkout + Stripe Webhooks            |
-| Animações     | framer-motion (opcional), transitions CSS    |
+| Pagamento     | Mercado Pago Checkout Pro + Webhooks          |
+| Animações     | transitions CSS                               |
 | Ícones        | lucide-react                                 |
 
 ---
@@ -37,7 +37,9 @@ Aplicação web completa e pronta para produção para venda de inscrições da 
 academia-rh/
 ├── supabase/
 │   └── migrations/
-│       └── 001_initial.sql          # Tabelas, RLS, funções RPC e seed
+│       ├── 001_initial.sql                # Tabelas, RLS, funções RPC e seed
+│       ├── 002_fix_event_details.sql      # Corrige data/horário do evento no banco
+│       └── 003_stripe_to_mercadopago.sql  # Migra colunas Stripe → Mercado Pago
 ├── public/
 │   └── images/
 │       ├── speaker.svg              # Placeholder da palestrante
@@ -45,8 +47,8 @@ academia-rh/
 └── src/
     ├── app/
     │   ├── api/
-    │   │   ├── checkout/route.ts    # Cria Checkout Session (reserva segura)
-    │   │   ├── webhook/route.ts     # Recebe eventos do Stripe (idempotente)
+    │   │   ├── checkout/route.ts    # Cria preferência Mercado Pago (reserva segura)
+    │   │   ├── webhook/route.ts     # Recebe notificações do Mercado Pago (idempotente)
     │   │   ├── waitlist/route.ts    # Entra na lista de espera
     │   │   ├── availability/route.ts# Retorna vagas disponíveis
     │   │   ├── registration/route.ts# Consulta inscrição (página /sucesso)
@@ -67,8 +69,8 @@ academia-rh/
     │   └── mobile-sticky-cta.tsx
     ├── lib/
     │   ├── event-config.ts          # ⚙️ CONFIGURAÇÃO CENTRAL DO EVENTO
-    │   ├── stripe.ts                # Cliente Stripe
-    │   ├── supabase/                # client.ts (anon) e server.ts (service role)
+    │   ├── mercadopago.ts           # Cliente Mercado Pago (somente servidor)
+    │   ├── supabase/                # server.ts (service role)
     │   ├── hooks/use-event-availability.ts
     │   └── utils.ts                 # Formatação de preço/data
     └── types/
@@ -81,7 +83,7 @@ academia-rh/
 
 - Node.js 18.18+ (recomendado 20+)
 - Conta no [Supabase](https://supabase.com) (gratuita para começar)
-- Conta no [Stripe](https://stripe.com) (modo teste para começar)
+- Conta no [Mercado Pago](https://www.mercadopago.com.br) para desenvolvedores (Access Token)
 
 ---
 
@@ -105,11 +107,13 @@ cp .env.example .env.local
 1. Crie um projeto no [Supabase](https://supabase.com/dashboard).
 2. Anote a **Project URL** e a **anon key** (Settings → API).
 3. Acesse **Settings → API → Project API keys** e copie também a **`service_role` key** (⚠️ guarde com segurança, nunca use no frontend).
-4. No painel do Supabase, abra **SQL Editor** e execute o arquivo:
+4. No painel do Supabase, abra **SQL Editor** e execute as migrações em ordem:
    ```
    supabase/migrations/001_initial.sql
+   supabase/migrations/002_fix_event_details.sql
+   supabase/migrations/003_stripe_to_mercadopago.sql
    ```
-   Este script cria as tabelas `events`, `registrations` e `waitlist`, os índices, as políticas de RLS, as funções `reserve_spot` e `confirm_registration` (que garantem o controle de vagas), e insere o evento inicial.
+   Os scripts criam as tabelas `events`, `registrations` e `waitlist`, os índices, as políticas de RLS, as funções `reserve_spot` e `confirm_registration` (que garantem o controle de vagas), inserem o evento inicial e migram os campos de pagamento para o Mercado Pago.
 
 > **Alternativa via CLI (opcional):**
 > ```bash
@@ -139,18 +143,18 @@ O cliente (frontend) **nunca** consegue alterar vagas, preço, status de pagamen
 
 ---
 
-## 💳 Como configurar o Stripe
+## 💳 Como configurar o Mercado Pago
 
-1. Crie uma conta no [Stripe](https://stripe.com). Use o **modo de teste** para desenvolvimento.
-2. No dashboard: **Developers → API keys**.
-   - **Publishable key** → `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
-   - **Secret key** → `STRIPE_SECRET_KEY` (⚠️ apenas para o servidor)
+1. Crie uma conta no [Mercado Pago Developers](https://www.mercadopago.com.br/developers).
+2. No dashboard: **Suas integrações → Credenciais**.
+   - Copie o **Access Token** → `MERCADOPAGO_ACCESS_TOKEN` (⚠️ apenas para o servidor).
+   - Tokens de teste começam com `TEST-`; tokens de produção com `APP_USR-`.
 3. Configure o **webhook**:
-   - **Developers → Webhooks → Add endpoint**
+   - **Suas integrações → Webhooks → Adicionar webhook**
    - URL (local em dev): `http://localhost:3000/api/webhook`
-   - (Para testar localmente use o [Stripe CLI](https://stripe.com/docs/stripe-cli) com `stripe listen --forward-to localhost:3000/api/webhook`)
-   - Eventos a escutar: **`checkout.session.completed`**
-4. Ao criar o webhook, você receberá o **Webhook signing secret** (`whsec_...`) → `STRIPE_WEBHOOK_SECRET`.
+   - Evento: **Pagamentos** (`payment.created`, `payment.updated`)
+   - (Para testar localmente use o [ngrok](https://ngrok.com) ou outro túnel apontando para `localhost:3000/api/webhook`, ou configure as URLs de retorno do Checkout Pro)
+4. **Opcional (recomendado):** na seção **Integração → Configurações**, ative as **Notificações assinadas** e copie o **Secret Signature** → `MERCADOPAGO_WEBHOOK_SECRET`. Sem ele, o webhook ainda funciona validando o pagamento na API do Mercado Pago.
 
 ---
 
@@ -164,10 +168,9 @@ NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGci...
 SUPABASE_SERVICE_ROLE_KEY=eyJhbGci...
 
-# Stripe
-STRIPE_SECRET_KEY=sk_test_xxxx
-STRIPE_WEBHOOK_SECRET=whsec_xxxx
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_xxxx
+# Mercado Pago
+MERCADOPAGO_ACCESS_TOKEN=TEST-xxxx  # ou APP_USR-xxxx em produção
+MERCADOPAGO_WEBHOOK_SECRET=          # opcional: secret signature para assinar webhooks
 
 # Admin
 ADMIN_PASSWORD=uma-senha-forte-aqui
@@ -176,7 +179,7 @@ ADMIN_PASSWORD=uma-senha-forte-aqui
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
-> ⚠️ **Nunca** exponha `SUPABASE_SERVICE_ROLE_KEY` ou `STRIPE_SECRET_KEY` no frontend. Elas são usadas apenas em API Routes / server components.
+> ⚠️ **Nunca** exponha `SUPABASE_SERVICE_ROLE_KEY` ou `MERCADOPAGO_ACCESS_TOKEN` no frontend. Elas são usadas apenas em API Routes / server components.
 
 ---
 
@@ -188,13 +191,7 @@ npm run dev
 
 Abra [http://localhost:3000](http://localhost:3000).
 
-Para testar o fluxo completo de pagamento localmente, use o Stripe CLI:
-
-```bash
-stripe listen --forward-to localhost:3000/api/webhook
-```
-
-O Stripe CLI exibirá um `whsec_...` que você deve colocar em `STRIPE_WEBHOOK_SECRET`.
+Para testar o fluxo completo de pagamento localmente, use um túnel HTTPS (ex.: [ngrok](https://ngrok.com)) apontando para `http://localhost:3000`, configure `NEXT_PUBLIC_APP_URL` com a URL do túnel e registre `https://SEU-TUNNEL/api/webhook` como webhook de pagamentos no painel do Mercado Pago (ou use as credenciais de teste `TEST-...`).
 
 ---
 
@@ -207,8 +204,8 @@ O Stripe CLI exibirá um `whsec_...` que você deve colocar em `STRIPE_WEBHOOK_S
 3. Adicione todas as variáveis do `.env.local` em **Settings → Environment Variables** (incluindo as de produção).
 4. Deploy!
 
-- **Importante para produção**: use as variáveis de produção do Supabase e do Stripe (mode live).
-- O webhook no Stripe deve apontar para a URL de produção: `https://SEU-DOMINIO/api/webhook`.
+- **Importante para produção**: use as variáveis de produção do Supabase e o Access Token **`APP_USR-`** do Mercado Pago.
+- O webhook no Mercado Pago deve apontar para a URL de produção: `https://SEU-DOMINIO/api/webhook`.
 
 ### Docker / servidor próprio
 
@@ -225,7 +222,7 @@ Existem **duas camadas de configuração**:
 
 ### 1. Banco de dados (`events` table) — valores dinâmicos
 
-O **preço**, a **capacidade**, a **data**, o **horário**, o **local** e o **endereço** usados na conversão (preço e vagas mostrados na página e cobrados no Stripe) vêm do banco.
+O **preço**, a **capacidade**, a **data**, o **horário**, o **local** e o **endereço** usados na conversão (preço e vagas mostrados na página e cobrados no Mercado Pago) vêm do banco.
 
 Atualize-os direto na tabela `events` (via SQL Editor do Supabase ou pelo painel):
 
@@ -233,17 +230,17 @@ Atualize-os direto na tabela `events` (via SQL Editor do Supabase ou pelo painel
 UPDATE events
 SET
   price      = 22990,          -- R$ 229,90 em centavos
-  capacity   = 50,             -- novas vagas
-  event_date = '2026-10-03',   -- data do evento
-  start_time = '09:00',
-  end_time   = '12:00',
-  location   = 'Bauru/SP',
-  address    = 'Endereço completo',
+  capacity   = 50,
+  event_date = '2026-10-17',
+  start_time = '08:00',
+  end_time   = '13:00',
+  location   = 'Universidade Anhembi Morumbi — Bauru',
+  address    = 'Rua Vereador Joaquim da Silva Martha, 14-55, Vila Santa Tereza, Bauru - SP',
   status     = 'active'
 WHERE status = 'active';
 ```
 
-> O preço é armazenado em **centavos** (ex.: `22990` = R$ 229,90). O Stripe também cobra em centavos.
+> O preço é armazenado em **centavos** no banco (ex.: `22990` = R$ 229,90). O Mercado Pago recebe o valor convertido para reais (`229.90`).
 
 ### 2. `src/lib/event-config.ts` — conteúdo estático da página
 
@@ -274,12 +271,12 @@ Landing Page
   → clica em "QUERO GARANTIR MINHA VAGA"
   → preenche nome/e-mail/telefone
   → API /api/checkout consulta Supabase (RPC reserve_spot, com lock)
-    → se houver vaga: cria Stripe Checkout Session
-    → reDireciona para o Stripe Checkout
-  → usuário paga
-  → Stripe dispara webhook checkout.session.completed
-  → /api/webhook valida assinatura e chama confirm_registration (idempotente)
-  → Supabase marca inscrição como "confirmed" + registra payment_intent
+    → se houver vaga: cria preferência no Mercado Pago (Checkout Pro)
+    → redireciona para o init_point do Mercado Pago
+  → usuário paga no Mercado Pago
+  → Mercado Pago envia webhook (payment) para /api/webhook
+  → /api/webhook consulta o pagamento na API (fonte da verdade) e chama confirm_registration (idempotente)
+  → Supabase marca inscrição como "confirmed" + registra payment_id
   → usuário cai em /sucesso (lê status real via /api/registration)
 
 Quando chega em 50 vagas:
@@ -303,9 +300,9 @@ npm run lint     # verifica lint
 
 ## 🔒 Segurança implementada
 
-- Secret keys somente no servidor (`STRIPE_SECRET_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_PASSWORD`).
-- Webhook validado por `stripe.webhooks.constructEvent`.
-- Webhook idempotente (`.since`/função RPC que não duplica).
+- Secret keys somente no servidor (`MERCADOPAGO_ACCESS_TOKEN`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_PASSWORD`).
+- Webhook valida a autenticidade (assinatura quando configurada) e **sempre consulta o pagamento na API do Mercado Pago** antes de confirmar.
+- Webhook idempotente (função RPC que não duplica inscrição).
 - Controle de vagas com `SELECT ... FOR UPDATE` no PostgreSQL (sem race condition).
 - RLS ativa no Supabase; operações sensíveis só por server components / API routes.
 - Página `/admin` protegida por senha (`ADMIN_PASSWORD`).
@@ -314,10 +311,10 @@ npm run lint     # verifica lint
 
 ## 🧪 Teste manual rápido
 
-1. Configure Supabase + Stripe (modo teste).
+1. Configure Supabase + Mercado Pago (Access Token de teste `TEST-`).
 2. `npm run dev` e acesse `http://localhost:3000`.
 3. Clique em "QUERO GARANTIR MINHA VAGA", preencha o formulário.
-4. Você será redirecionado ao Checkout do Stripe (use o cartão de teste `4242 4242 4242 4242`).
+4. Você será redirecionado ao Checkout do Mercado Pago (use os cartões de teste: `5031 4332 1540 6351`).
 5. Após pagar, o webhook confirma a inscrição e você verá `/sucesso`.
 6. Acesse a listagem em `http://localhost:3000/admin` (use a senha configurada).
 7. Para testar o esgotamento: reduza `capacity` para `1` na tabela `events` e observe a página mudar para "VAGAS ESGOTADAS" com a opção de lista de espera.

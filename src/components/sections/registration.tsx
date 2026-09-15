@@ -6,10 +6,12 @@ import { Reveal } from "@/components/ui/reveal";
 import { SpotsMeter } from "@/components/ui/spots-indicator";
 import { CheckoutForm } from "@/components/checkout-form";
 import { WaitlistForm } from "@/components/waitlist-form";
+import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
 import { eventConfig } from "@/lib/event-config";
 import { formatPrice } from "@/lib/utils";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 import type { Event } from "@/types/database";
-import { Users, ShieldCheck, Sparkles, ArrowLeft } from "lucide-react";
+import { ShieldCheck, Sparkles, ArrowLeft, Coffee } from "lucide-react";
 
 interface RegistrationSectionProps {
   event: Event;
@@ -27,6 +29,7 @@ export function RegistrationSection({
   loading,
 }: RegistrationSectionProps) {
   const [view, setView] = useState<"select" | "checkout" | "waitlist">("select");
+  const [notice, setNotice] = useState<string | null>(null);
 
   const handleCheckout = async (data: { name: string; email: string; phone: string }) => {
     const res = await fetch("/api/checkout", {
@@ -34,15 +37,22 @@ export function RegistrationSection({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    const json = await res.json();
+    const json = await res.json().catch(() => ({}));
     if (!res.ok) {
+      if (json.code === "EVENT_NOT_AVAILABLE") {
+        setNotice(
+          "As inscrições ainda não estão abertas. Deixe seus dados abaixo e avisaremos você assim que liberarmos o acesso (ou resolva seu pagamento)!"
+        );
+        setView("waitlist");
+        throw new Error("__NOT_AVAILABLE__");
+      }
       throw new Error(json.error || "Erro ao iniciar o pagamento.");
     }
     return json.url as string;
   };
 
   return (
-    <Section id="inscricao" className="relative overflow-hidden bg-gradient-to-b from-white via-mist to-white">
+    <Section id="inscricao" className="relative bg-gradient-to-b from-white via-mist to-white">
       {/* decorative */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60rem] h-[60rem] rounded-full border border-navy-100/60 pointer-events-none" aria-hidden />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[44rem] h-[44rem] rounded-full border border-teal-100/70 pointer-events-none" aria-hidden />
@@ -109,12 +119,28 @@ export function RegistrationSection({
                           QUERO GARANTIR MINHA VAGA
                         </button>
 
+                        <div className="border-t border-navy-100 pt-5 text-center">
+                          <p className="text-sm font-semibold text-navy-500 mb-3">
+                            Prefere falar com a gente?
+                          </p>
+                          <a
+                            href={getWhatsAppLink()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-ghost-brand text-base w-full py-3.5"
+                            aria-label="Falar com a Academia RH pelo WhatsApp"
+                          >
+                            <WhatsAppIcon className="w-5 h-5 text-teal-600" />
+                            Falar pelo WhatsApp
+                          </a>
+                        </div>
+
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-navy-600 pt-1 text-center">
                           <div className="flex items-center gap-1.5 justify-center">
                             <ShieldCheck className="w-4 h-4 text-teal-600" /> Pagamento seguro
                           </div>
                           <div className="flex items-center gap-1.5 justify-center">
-                            <Users className="w-4 h-4 text-teal-600" /> Presencial
+                            <Coffee className="w-4 h-4 text-teal-600" /> Coffee Break incluso
                           </div>
                           <div className="flex items-center gap-1.5 justify-center">
                             <Sparkles className="w-4 h-4 text-teal-600" /> Conteúdo exclusivo
@@ -142,9 +168,17 @@ export function RegistrationSection({
 
                 {view === "waitlist" && (
                   <div>
+                    {notice && (
+                      <div className="rounded-xl border border-amber-200 bg-amber-50 text-amber-800 p-4 text-sm mb-4">
+                        {notice}
+                      </div>
+                    )}
                     {!isSoldOut && (
                       <button
-                        onClick={() => setView("select")}
+                        onClick={() => {
+                          setNotice(null);
+                          setView("select");
+                        }}
                         className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy-500 hover:text-navy mb-5"
                       >
                         <ArrowLeft className="w-4 h-4" /> Voltar

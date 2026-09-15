@@ -201,12 +201,12 @@ CREATE POLICY "No public read on waitlist"
 INSERT INTO events (name, description, event_date, start_time, end_time, location, address, capacity, price, status)
 VALUES (
   'Academia RH',
-  'Palestra presencial de RH e recrutamento para iniciantes. Uma oportunidade única de aprender na prática como funciona o mundo do RH e recrutamento, com uma profissional experiente da área.',
-  '2026-10-03',
-  '09:00',
-  '12:00',
-  'Bauru/SP',
-  'Endereço do evento a ser definido - Bauru/SP',
+  'Academia RH é um espaço de desenvolvimento e capacitação para profissionais e empresas que desejam aprender, praticar e transformar a gestão de pessoas. Na Academia RH, conhecimento vira prática, profissionais ganham segurança e empresas constroem resultados melhores por meio das pessoas.',
+  '2026-10-17',
+  '08:00',
+  '13:00',
+  'Universidade Anhembi Morumbi — Bauru',
+  'Rua Vereador Joaquim da Silva Martha, 14-55, Vila Santa Tereza, Bauru - SP',
   50,
   22990,
   'active'

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminClient } from "@/lib/supabase/server";
-import { stripe } from "@/lib/stripe";
+import { getPreference } from "@/lib/mercadopago";
+import { getCheckoutUnitPrice } from "@/lib/pricing";
 import { eventConfig } from "@/lib/event-config";
 
 export async function POST(request: NextRequest) {
@@ -24,9 +25,14 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (eventError || !event) {
+      console.warn("Checkout blocked: no active event in DB.", eventError?.message);
       return NextResponse.json(
-        { error: "Evento não encontrado." },
-        { status: 404 }
+        {
+          error:
+            "As inscrições ainda não estão abertas. Entre na lista de espera e avisaremos você assim que estiverem disponíveis.",
+          code: "EVENT_NOT_AVAILABLE",
+        },
+        { status: 403 }
       );
     }
 
@@ -43,9 +49,20 @@ export async function POST(request: NextRequest) {
 
     if (reserveError) {
       console.error("Reserve spot error:", reserveError);
+      const notMigrated =
+        reserveError.code === "PGRST202" ||
+        /not found|does not exist|function.*reserve_spot/i.test(
+          reserveError.message || ""
+        );
       return NextResponse.json(
-        { error: "Erro ao processar inscrição. Tente novamente." },
-        { status: 500 }
+        notMigrated
+          ? {
+              error:
+                "As inscrições ainda não estão abertas. Entre na lista de espera e avisaremos você assim que estiverem disponíveis.",
+              code: "EVENT_NOT_AVAILABLE",
+            }
+          : { error: "Erro ao processar inscrição. Tente novamente." },
+        { status: notMigrated ? 403 : 500 }
       );
     }
 
@@ -69,41 +86,54 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create Stripe Checkout Session
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      mode: "payment",
-      customer_email: email,
-      line_items: [
-        {
-          price_data: {
-            currency: "brl",
-            product_data: {
-              name: eventConfig.name,
-              description: `${eventConfig.tagline} - ${eventConfig.date}`,
-            },
-            unit_amount: event.price,
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
+    // Create Mercado Pago preference (Checkout Pro)
+    const preference = await getPreference().create({
+      body: {
+        items: [
+          {
+            id: `event-${event.id}`,
+            title: eventConfig.name,
+            description: `${eventConfig.tagline} - ${eventConfig.date}`,
+            quantity: 1,
+            currency_id: "BRL",
+            unit_price: getCheckoutUnitPrice(event.price),
           },
-          quantity: 1,
+        ],
+        payer: {
+          name,
+          email,
         },
-      ],
-      metadata: {
-        registration_id: result.registration_id!,
-        event_id: event.id,
+        external_reference: result.registration_id!,
+        metadata: {
+          registration_id: result.registration_id!,
+          event_id: event.id,
+        },
+        back_urls: {
+          success: `${appUrl}/sucesso`,
+          pending: `${appUrl}/sucesso`,
+          failure: `${appUrl}/cancelado`,
+        },
+        auto_return: "approved",
+        notification_url: `${appUrl}/api/webhook`,
+        statement_descriptor: "ACADEMIA RH",
       },
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/sucesso?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancelado`,
     });
 
-    // Update registration with session ID
+    if (!preference.id || !preference.init_point) {
+      throw new Error("Mercado Pago não retornou a URL de pagamento.");
+    }
+
+    // Update registration with preference ID
     await supabase
       .from("registrations")
-      .update({ stripe_checkout_session_id: session.id })
+      .update({ mercadopago_preference_id: preference.id })
       .eq("id", result.registration_id);
 
     return NextResponse.json({
-      url: session.url,
-      session_id: session.id,
+      url: preference.init_point,
+      preference_id: preference.id,
     });
   } catch (error) {
     console.error("Checkout error:", error);

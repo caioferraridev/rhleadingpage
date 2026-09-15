@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { WhatsAppFloat } from "@/components/whatsapp-float";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,25 +12,29 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   title: {
-    default: "Academia RH | Palestra de RH em Bauru",
+    default: "Academia RH | Desenvolvimento e capacitação em Gestão de Pessoas",
     template: "%s | Academia RH",
   },
   description:
-    "Palestra presencial de RH e recrutamento para iniciantes em Bauru/SP. Aprenda na prática como funcionam os processos seletivos e dê o primeiro passo na sua carreira. Vagas limitadas a 50 participantes.",
+    "Academia RH é um espaço de desenvolvimento e capacitação para profissionais e empresas que desejam aprender, praticar e transformar a gestão de pessoas. Evento presencial com Talita Maia em Bauru/SP. 17 de outubro de 2026, das 08h às 13h, na Universidade Anhembi Morumbi. Coffee break incluso. Vagas limitadas a 50 participantes.",
   keywords: [
     "Academia RH",
-    "palestra RH",
+    "Talita Maia",
+    "gestão de pessoas",
+    "capacitação de RH",
     "recrutamento",
-    "RH para iniciantes",
-    "carreira em RH",
-    "Bauru",
+    "desenvolvimento de pessoas",
+    "liderança",
+    "RH estratégico",
     "evento presencial RH",
+    "Bauru",
+    "Universidade Anhembi Morumbi",
   ],
   authors: [{ name: "Academia RH" }],
   openGraph: {
-    title: "Academia RH | Palestra de RH em Bauru",
+    title: "Academia RH | Desenvolvimento e capacitação em Gestão de Pessoas",
     description:
-      "Palestra presencial de RH e recrutamento para iniciantes em Bauru/SP. Vagas limitadas a 50 participantes. Garanta sua vaga!",
+      "Conhecimento vira prática, profissionais ganham segurança e empresas constroem resultados melhores por meio das pessoas. Evento presencial em Bauru/SP com Talita Maia em 17 de outubro de 2026. Coffee break incluso. Vagas limitadas a 50 participantes.",
     type: "website",
     locale: "pt_BR",
     siteName: "Academia RH",
@@ -38,15 +43,15 @@ export const metadata: Metadata = {
         url: "/images/og-image.svg",
         width: 1200,
         height: 630,
-        alt: "Academia RH - Palestra de RH em Bauru",
+        alt: "Academia RH - Desenvolvimento e capacitação em Gestão de Pessoas",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Academia RH | Palestra de RH em Bauru",
+    title: "Academia RH | Desenvolvimento e capacitação em Gestão de Pessoas",
     description:
-      "Palestra presencial de RH e recrutamento para iniciantes em Bauru/SP. Vagas limitadas a 50 participantes.",
+      "Conhecimento vira prática, profissionais ganham segurança e empresas constroem resultados melhores por meio das pessoas. Evento presencial em Bauru/SP em 17 de outubro de 2026. Vagas limitadas a 50 participantes.",
     images: ["/images/og-image.svg"],
   },
   robots: {
@@ -70,6 +75,7 @@ export default function RootLayout({
     <html lang="pt-BR" className={`${inter.variable}`}>
       <body className="font-sans antialiased bg-white text-navy-800 min-h-screen flex flex-col">
         {children}
+        <WhatsAppFloat />
       </body>
     </html>
   );

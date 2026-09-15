@@ -1,5 +1,31 @@
 import { NextResponse } from "next/server";
 import { getAdminClient } from "@/lib/supabase/server";
+import { eventConfig } from "@/lib/event-config";
+
+function fallbackResponse() {
+  return NextResponse.json({
+    event: {
+      id: "fallback",
+      name: eventConfig.name,
+      description: eventConfig.description,
+      event_date: eventConfig.date,
+      start_time: eventConfig.startTime,
+      end_time: eventConfig.endTime,
+      location: eventConfig.location,
+      address: eventConfig.address,
+      capacity: eventConfig.capacity,
+      price: eventConfig.price,
+      status: "active",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+    confirmed_count: 0,
+    spots_left: eventConfig.capacity,
+    is_sold_out: false,
+    is_last_spots: eventConfig.capacity <= 10,
+    from_fallback: true,
+  });
+}
 
 export async function GET() {
   try {
@@ -11,10 +37,16 @@ export async function GET() {
       .single();
 
     if (eventError || !event) {
-      return NextResponse.json(
-        { error: "Evento não encontrado." },
-        { status: 404 }
+      const cause = (eventError as { cause?: unknown } | null)?.cause;
+      console.warn(
+        "No active event found in DB, using fallback config:",
+        eventError?.message,
+        "| url:",
+        process.env.NEXT_PUBLIC_SUPABASE_URL,
+        "| cause:",
+        cause instanceof Error ? `${cause.name}: ${cause.message}` : JSON.stringify(cause ?? null)
       );
+      return fallbackResponse();
     }
 
     const { count: confirmed_count, error: countError } = await supabase
@@ -43,9 +75,6 @@ export async function GET() {
     });
   } catch (error) {
     console.error("Availability error:", error);
-    return NextResponse.json(
-      { error: "Erro interno do servidor." },
-      { status: 500 }
-    );
+    return fallbackResponse();
   }
 }

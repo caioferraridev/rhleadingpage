@@ -4,18 +4,20 @@ import { useState } from "react";
 import { Section, SectionTitle } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
 import { ChevronDown } from "lucide-react";
+import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 
 const faqs = [
   {
     question: "Preciso ter experiência para participar?",
     answer:
-      "Não! A Academia RH foi pensada justamente para quem está começando ou quer iniciar na área de RH. Não é necessário nenhum conhecimento prévio.",
+      "Não! A Academia RH foi pensada para profissionais e empresas que desejam aprender, praticar e transformar a gestão de pessoas. Não é necessário conhecimento prévio.",
   },
   {
     question: "O evento é presencial mesmo?",
     answer:
-      "Sim! A palestra acontece presencialmente em Bauru/SP. Esse formato é ideal para o networking e a troca de experiências com a palestrante e outros participantes.",
+      "Sim! O encontro acontece presencialmente na Universidade Anhembi Morumbi, em Bauru/SP, no dia 17 de outubro de 2026, das 08h às 13h, com coffee break incluso. Esse formato é ideal para o networking e a troca de experiências com a palestrante e outros participantes.",
   },
   {
     question: "Como recebo a confirmação da minha inscrição?",
@@ -25,12 +27,13 @@ const faqs = [
   {
     question: "Como funciona o pagamento?",
     answer:
-      "O pagamento é feito de forma segura pela Stripe, com cartão de crédito. Todo o processo é automático e você recebe a confirmação imediatamente.",
+      "O pagamento é feito de forma segura pelo Mercado Pago. Você pode pagar com cartão de crédito, Pix, boleto ou débito direto pela plataforma, incluindo parcelamento quando disponível. Todo o processo é automático e você recebe a confirmação imediatamente.",
   },
   {
     question: "E se eu precisar de mais informações?",
     answer:
-      "Fique à vontade para entrar em contato. Teremos o maior prazer em te ajudar a garantir sua participação.",
+      "Fique à vontade para entrar em contato pelo WhatsApp. Teremos o maior prazer em te ajudar a garantir sua participação.",
+    highlightWhatsApp: true,
   },
 ];
 
@@ -55,7 +58,7 @@ export function FAQ() {
             <Reveal key={faq.question} delay={index * 50}>
               <div
                 className={cn(
-                  "bg-white rounded-xl border overflow-hidden transition-colors",
+                  "bg-white rounded-xl border transition-colors",
                   isOpen ? "border-teal-300" : "border-navy-100"
                 )}
               >
@@ -78,6 +81,18 @@ export function FAQ() {
                 {isOpen && (
                   <div className="px-5 pb-5">
                     <p className="text-navy-600/80 leading-relaxed">{faq.answer}</p>
+                    {faq.highlightWhatsApp && (
+                      <a
+                        href={getWhatsAppLink()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 mt-4 font-bold text-teal-600 hover:text-teal-700 transition-colors"
+                        aria-label="Falar com a Academia RH pelo WhatsApp"
+                      >
+                        <WhatsAppIcon className="w-4 h-4" />
+                        Falar pelo WhatsApp
+                      </a>
+                    )}
                   </div>
                 )}
               </div>
