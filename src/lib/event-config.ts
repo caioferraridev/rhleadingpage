@@ -2,11 +2,9 @@ export const eventConfig = {
   name: "Academia RH",
   tagline: "Desenvolvimento e capacitação para profissionais e empresas",
   description:
-    "A Academia RH é um espaço de desenvolvimento e capacitação que transforma conhecimento em prática, ajudando profissionais e empresas a desenvolverem uma gestão de pessoas mais preparada, estratégica e humana.",
+    "A Academia RH é um espaço de desenvolvimento e capacitação que transforma conhecimento em prática. E, para marcar esse início, traz para você a primeira edição do treinamento “Recrutamento e Seleção na Prática” — uma oportunidade para quem quer aprender, se aprimorar ou começar a atuar na área de Recrutamento e Seleção, com conteúdo prático e baseado em experiências reais de mais de 20 anos de atuação em RH.",
 
-  // First edition focus — this is NOT a generic RH course
-  editionFocus:
-    "Nesta primeira edição, o treinamento será dedicado a Recrutamento e Seleção, trazendo uma abordagem prática para quem deseja aprender, aprimorar ou entender melhor os processos de contratação e escolha de profissionais.",
+  // First experience launched by the Academia RH brand
   editionTitle: "Recrutamento e Seleção na Prática",
 
   // Event Details
@@ -42,31 +40,31 @@ export const eventConfig = {
     imageUrl: "/images/palestrante.jpeg",
   },
 
-  // Benefits — 1st edition: Recrutamento e Seleção
+  // Benefits — elements of the participant experience in this first edition
   benefits: [
     {
-      title: "Conhecimento prático em R&S",
-      description: "Aprenda na prática como aplicar as melhores técnicas de recrutamento e seleção no dia a dia.",
+      title: "Conhecimento prático",
+      description: "Conteúdo aplicado e baseado em experiências reais de mais de 20 anos de atuação em Recursos Humanos.",
     },
     {
-      title: "Processos seletivos eficazes",
-      description: "Saiba como estruturar e conduzir processos seletivos que atraem e identificam os melhores talentos.",
+      title: "Networking",
+      description: "Troque experiências com profissionais, gestores e pessoas que atuam ou querem atuar com processos seletivos.",
     },
     {
-      title: "Técnicas de entrevista e avaliação",
-      description: "Domine ferramentas e abordagens para avaliar candidatos com precisão e reduzir erros de contratação.",
+      title: "Novos insights",
+      description: "Tenha novas perspectivas sobre contratação, seleção e sobre o papel das pessoas nas organizações.",
     },
     {
-      title: "Visão do mercado de trabalho",
-      description: "Compreenda como o recrutamento se conecta com as necessidades reais das organizações e do mercado.",
+      title: "Desenvolvimento profissional",
+      description: "Aprofunde competências e ganhe mais segurança para conduzir processos de Recrutamento e Seleção.",
     },
     {
-      title: "Networking presencial",
-      description: "Conecte-se com outros profissionais e especialistas da área de RH e gestão de pessoas.",
+      title: "Certificado de participação",
+      description: "Receba o certificado da primeira edição da Academia RH como registro da sua participação.",
     },
     {
-      title: "Coffee Break incluso",
-      description: "Aproveite o coffee break para networking e troca de experiências com outros participantes.",
+      title: "Coffee break",
+      description: "Aproveite o intervalo para networking e troca de experiências com os demais participantes.",
     },
   ],
 

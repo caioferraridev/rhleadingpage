@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Calendar, Clock, MapPin, ChevronDown, Users, GraduationCap, Coffee } from "lucide-react";
+import { Calendar, Clock, MapPin, ChevronDown, Users, GraduationCap, Coffee, Sparkles } from "lucide-react";
 import { eventConfig } from "@/lib/event-config";
 import { formatPrice, formatDateShort, formatTime } from "@/lib/utils";
 import { SpotsIndicator } from "@/components/ui/spots-indicator";
@@ -47,16 +47,21 @@ export function Hero({ event, isSoldOut, loading }: HeroProps) {
 
             <SpotsIndicator isSoldOut={isSoldOut} loading={loading} />
 
-            <h1 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-black text-navy leading-[1.08] mt-6 mb-5 tracking-tight">
-              <span className="text-brand-gradient">Recrutamento e Seleção</span> na prática,
-              do jeito certo.
+            <div className="mt-6 mb-4">
+              <span className="inline-flex items-center gap-2 bg-teal-50 border border-teal-200 rounded-full px-3.5 py-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-teal-600" aria-hidden />
+                <span className="text-[0.7rem] font-bold uppercase tracking-widest text-teal-700">
+                  Primeira edição
+                </span>
+              </span>
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-black text-navy leading-[1.08] mb-5 tracking-tight">
+              <span className="text-brand-gradient">Recrutamento e Seleção</span> na Prática
             </h1>
 
             <p className="text-lg md:text-xl text-navy-600/80 leading-relaxed max-w-xl mb-8">
-              A Academia RH é um espaço de desenvolvimento e capacitação que transforma
-              conhecimento em prática. Nesta primeira edição, o treinamento é dedicado a
-              Recrutamento e Seleção, para quem quer aprender, aprimorar ou entender
-              melhor os processos de contratação.
+              {eventConfig.description}
             </p>
 
             {/* Event meta */}

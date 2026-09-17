@@ -10,23 +10,37 @@ export function About() {
   return (
     <Section id="o-que-e" className="bg-mist">
       <Reveal>
-        <SectionTitle
-          eyebrow="Sobre a Academia RH"
-          subtitle="A Academia RH é um espaço de desenvolvimento e capacitação que transforma conhecimento em prática, ajudando profissionais e empresas a desenvolverem uma gestão de pessoas mais preparada, estratégica e humana."
-        >
+        <SectionTitle eyebrow="Sobre a Academia RH">
           O que é a <span className="text-brand-gradient">Academia RH</span>?
         </SectionTitle>
       </Reveal>
 
       <Reveal delay={100}>
-        <div className="mb-12 max-w-3xl mx-auto text-center">
+        <div className="mb-12 max-w-3xl mx-auto text-center space-y-6">
           <p className="text-lg text-navy-600/80 leading-relaxed">
-            Ao longo de sua trajetória, a Academia RH poderá abordar diferentes temas
-            relacionados à gestão de pessoas. Nesta primeira edição, o foco é
-            <span className="font-bold text-navy"> Recrutamento e Seleção</span>.
+            A Academia RH nasceu de uma experiência construída ao longo de anos de
+            atuação em Recursos Humanos e da vontade de compartilhar aquilo que
+            realmente funciona na prática.
           </p>
-          <p className="text-lg text-navy-600/80 leading-relaxed mt-4">
-            {eventConfig.editionFocus}
+          <p className="text-lg text-navy-600/80 leading-relaxed">
+            Mais do que transmitir conceitos, a proposta é criar experiências de
+            aprendizagem que aproximem o conhecimento dos desafios encontrados pelos
+            profissionais e pelas empresas no dia a dia.
+          </p>
+          <p className="text-2xl md:text-3xl font-black text-brand-gradient pt-1">
+            Aprender. Praticar. Transformar.
+          </p>
+          <p className="text-lg text-navy-600/80 leading-relaxed">
+            Esse é o propósito que guia a Academia RH.
+          </p>
+          <p className="text-lg text-navy-600/80 leading-relaxed">
+            E se você está buscando mais conhecimento, segurança e preparo para lidar
+            com pessoas e processos de contratação, essa experiência foi pensada para
+            você.
+          </p>
+          <p className="text-lg text-navy-600/80 leading-relaxed font-medium">
+            Venha aprender na prática, trocar experiências e dar um novo passo no seu
+            desenvolvimento profissional.
           </p>
         </div>
       </Reveal>

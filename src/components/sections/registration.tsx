@@ -70,6 +70,10 @@ export function RegistrationSection({
               <div className="bg-gradient-to-r from-navy via-navy-600 to-navy p-6 md:p-8 text-white text-center">
                 <h3 className="text-xl md:text-2xl font-black tracking-tight">{eventConfig.name}</h3>
                 <p className="text-teal-200/90 text-sm mt-1 font-medium">{eventConfig.tagline}</p>
+                <p className="inline-flex items-center gap-2 mt-3 bg-white/10 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-teal-200">
+                  <Sparkles className="w-3.5 h-3.5" aria-hidden />
+                  Primeira edição · {eventConfig.editionTitle}
+                </p>
 
                 <div className="flex items-baseline justify-center gap-2 mt-5">
                   <span className="text-5xl font-black">{formatPrice(event.price)}</span>
