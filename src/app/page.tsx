@@ -98,6 +98,8 @@ export default async function HomePage() {
             "@context": "https://schema.org",
             "@type": "Event",
             name: eventConfig.name,
+            description: eventConfig.schema.description,
+            image: `${SITE_URL}${eventConfig.schema.image}`,
             startDate: `${event.event_date}T${event.start_time}`,
             endDate: `${event.event_date}T${event.end_time}`,
             eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
@@ -113,6 +115,15 @@ export default async function HomePage() {
                 addressCountry: "BR",
               },
             },
+            performer: {
+              "@type": "Person",
+              name: eventConfig.speaker.name,
+            },
+            organizer: {
+              "@type": "Organization",
+              name: eventConfig.name,
+              url: `${SITE_URL}/`,
+            },
             offers: {
               "@type": "Offer",
               url: `${SITE_URL}/`,
@@ -122,6 +133,7 @@ export default async function HomePage() {
                 isSoldOut
                   ? "https://schema.org/SoldOut"
                   : "https://schema.org/InStock",
+              validFrom: eventConfig.schema.validFrom,
             },
           }),
         }}

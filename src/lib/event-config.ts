@@ -7,6 +7,15 @@ export const eventConfig = {
   // First experience launched by the Academia RH brand
   editionTitle: "Recrutamento e Seleção na Prática",
 
+  // Structured data (JSON-LD) — campos opcionais do schema de Event
+  schema: {
+    description:
+      "Treinamento presencial de Recrutamento e Seleção na prática, com Talita Maia, para profissionais de RH, estudantes, gestores, líderes, empresários e profissionais que participam de processos de contratação. O encontro aborda definição do perfil da vaga, técnicas de entrevista, avaliação de candidatos, ferramentas e cases práticos.",
+    image: "/images/og-image.svg",
+    // Início de validade da oferta/preço (não é a data do evento)
+    validFrom: "2026-09-17T00:00:00-03:00",
+  },
+
   // Event Details
   date: "2026-10-17",
   startTime: "08:00",
