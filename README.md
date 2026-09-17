@@ -229,7 +229,7 @@ Atualize-os direto na tabela `events` (via SQL Editor do Supabase ou pelo painel
 ```sql
 UPDATE events
 SET
-  price      = 22990,          -- R$ 229,90 em centavos
+  price      = 28900,          -- R$ 289,00 em centavos
   capacity   = 50,
   event_date = '2026-10-17',
   start_time = '08:00',
@@ -240,7 +240,7 @@ SET
 WHERE status = 'active';
 ```
 
-> O preço é armazenado em **centavos** no banco (ex.: `22990` = R$ 229,90). O Mercado Pago recebe o valor convertido para reais (`229.90`).
+> O preço é armazenado em **centavos** no banco (ex.: `28900` = R$ 289,00). O Mercado Pago recebe o valor convertido para reais (`289.00`).
 
 ### 2. `src/lib/event-config.ts` — conteúdo estático da página
 

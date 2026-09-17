@@ -13,7 +13,7 @@ export const eventConfig = {
   coffeeBreak: true,
 
   // Pricing & Capacity
-  price: 22990, // R$ 229,90 em centavos
+  price: 28900, // R$ 289,00 em centavos
   capacity: 50,
 
   // WhatsApp

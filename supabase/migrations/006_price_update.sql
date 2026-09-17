@@ -1,26 +1,19 @@
 -- =====================================================
--- Academia RH - Correção dos dados oficiais do evento
+-- Academia RH - Atualização oficial do preço
 -- =====================================================
--- Corrige o registro existente na tabela events que ainda
--- contenha a data/horário antigos (2026-10-03, 09:00-12:00).
--- A migração 001_initial usa ON CONFLICT DO NOTHING, então
--- registros já criados precisam desta atualização explícita.
+-- Preço oficial vigente: R$ 289,00 (28900 em centavos).
+-- Aplica apenas o preço do evento (events.price), usado na
+-- cobrança do Mercado Pago e na validação de valor pago do
+-- webhook (confirm_registration). NÃO altera registros
+-- históricos de pagamentos já realizados (registrations.amount_paid).
 
 UPDATE events
 SET
-  event_date = '2026-10-17',
-  start_time = '08:00',
-  end_time   = '13:00',
-  location   = 'Universidade Anhembi Morumbi — Bauru',
-  address    = 'Rua Vereador Joaquim da Silva Martha, 14-55, Vila Santa Tereza, Bauru - SP',
   price      = 28900,          -- R$ 289,00 em centavos
-  capacity   = 50,
-  status     = 'active',
   updated_at = NOW()
 WHERE status = 'active';
 
--- Garante que também exista o registro ativo com os dados corretos
--- quando a tabela estiver vazia (seed idempotente).
+-- Seed idempotente para o caso de tabela vazia (mesmo padrão da 002).
 INSERT INTO events (name, description, event_date, start_time, end_time, location, address, capacity, price, status)
 SELECT
   'Academia RH',

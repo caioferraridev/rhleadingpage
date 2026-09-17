@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS events (
   location TEXT NOT NULL,
   address TEXT,
   capacity INTEGER NOT NULL DEFAULT 50,
-  price INTEGER NOT NULL DEFAULT 22990, -- stored in cents (R$ 229.90)
+  price INTEGER NOT NULL DEFAULT 28900, -- stored in cents (R$ 289.00)
   status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'cancelled')),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -208,7 +208,7 @@ VALUES (
   'Universidade Anhembi Morumbi — Bauru',
   'Rua Vereador Joaquim da Silva Martha, 14-55, Vila Santa Tereza, Bauru - SP',
   50,
-  22990,
+  28900,
   'active'
 )
 ON CONFLICT DO NOTHING;
