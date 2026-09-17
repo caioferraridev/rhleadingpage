@@ -9,13 +9,11 @@ import type { Event } from "@/types/database";
 
 interface HeroProps {
   event: Event;
-  spotsLeft: number;
   isSoldOut: boolean;
-  isLastSpots: boolean;
   loading?: boolean;
 }
 
-export function Hero({ event, spotsLeft, isSoldOut, isLastSpots, loading }: HeroProps) {
+export function Hero({ event, isSoldOut, loading }: HeroProps) {
   const handleCtaClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (isSoldOut) return;
@@ -47,13 +45,7 @@ export function Hero({ event, spotsLeft, isSoldOut, isLastSpots, loading }: Hero
               </span>
             </div>
 
-            <SpotsIndicator
-              spotsLeft={spotsLeft}
-              capacity={event.capacity}
-              isSoldOut={isSoldOut}
-              isLastSpots={isLastSpots}
-              loading={loading}
-            />
+            <SpotsIndicator isSoldOut={isSoldOut} loading={loading} />
 
             <h1 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-black text-navy leading-[1.08] mt-6 mb-5 tracking-tight">
               Transforme a <span className="text-brand-gradient">gestão de pessoas</span>{" "}
@@ -150,7 +142,7 @@ export function Hero({ event, spotsLeft, isSoldOut, isLastSpots, loading }: Hero
                     Vagas limitadas
                   </p>
                   <p className="font-black text-navy leading-tight">
-                    {loading ? "..." : `${spotsLeft} disponíveis`}
+                    {loading ? "..." : isSoldOut ? "Esgotadas" : "Garanta a sua"}
                   </p>
                 </div>
               </div>

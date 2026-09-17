@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Section, SectionTitle } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
-import { SpotsMeter } from "@/components/ui/spots-indicator";
+import { AvailabilityNotice } from "@/components/ui/spots-indicator";
 import { CheckoutForm } from "@/components/checkout-form";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
@@ -15,17 +15,13 @@ import { ShieldCheck, Sparkles, ArrowLeft, Coffee } from "lucide-react";
 
 interface RegistrationSectionProps {
   event: Event;
-  spotsLeft: number;
   isSoldOut: boolean;
-  isLastSpots: boolean;
   loading?: boolean;
 }
 
 export function RegistrationSection({
   event,
-  spotsLeft,
   isSoldOut,
-  isLastSpots,
   loading,
 }: RegistrationSectionProps) {
   const [view, setView] = useState<"select" | "checkout" | "waitlist">("select");
@@ -61,7 +57,7 @@ export function RegistrationSection({
         <Reveal>
           <SectionTitle
             eyebrow="Garanta sua vaga"
-            subtitle="Garanta seu lugar presencialmente. Vagas limitadas a 50 participantes."
+            subtitle="Garanta seu lugar presencialmente. Vagas limitadas."
           >
             Pronto para dar o próximo passo?
           </SectionTitle>
@@ -86,25 +82,20 @@ export function RegistrationSection({
               <div className="p-6 md:p-9">
                 {view === "select" && (
                   <div className="space-y-6">
-                    {/* Spots meter */}
+                    {/* Availability notice (no counters) */}
                     <div className="rounded-2xl border border-navy-100 bg-mist p-5">
                       {loading ? (
-                        <p className="text-center font-bold text-navy">Consultando vagas...</p>
+                        <p className="text-center font-bold text-navy">Consultando disponibilidade...</p>
                       ) : (
-                        <SpotsMeter
-                          spotsLeft={spotsLeft}
-                          capacity={event.capacity}
-                          isSoldOut={isSoldOut}
-                          isLastSpots={isLastSpots}
-                        />
+                        <AvailabilityNotice isSoldOut={isSoldOut} />
                       )}
                     </div>
 
                     {isSoldOut ? (
                       <div className="space-y-4">
                         <p className="text-center text-navy-700 font-semibold">
-                          As {event.capacity} vagas disponíveis foram preenchidas. Entre para a
-                          lista de espera e seja avisado(a) caso uma vaga seja liberada.
+                          As vagas para participação estão esgotadas. Entre na lista de espera e
+                          seja avisado(a) caso uma vaga seja liberada.
                         </p>
                         <button
                           onClick={() => setView("waitlist")}

@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCronSecret, isEmailConfigured } from "@/lib/emails/config";
 import { sendScheduledReminders } from "@/lib/emails/service";
+import { safeEqual } from "@/lib/security";
 
 function authorize(request: NextRequest): boolean {
   const secret = getCronSecret();
   if (!secret) return false;
   const header = request.headers.get("authorization") ?? "";
-  return header === `Bearer ${secret}`;
+  return safeEqual(header, `Bearer ${secret}`);
 }
 
 async function run(request: NextRequest) {

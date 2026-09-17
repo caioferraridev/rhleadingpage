@@ -45,15 +45,18 @@ export default function SuccessPage() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
     const paymentId = params.get("collection_id") ?? params.get("payment_id");
     const preferenceId = params.get("preference_id");
 
-    if (!paymentId && !preferenceId) {
+    if (!token && !paymentId && !preferenceId) {
       setState({ loading: false, data: null, error: null });
       return;
     }
 
-    const query = paymentId
+    const query = token
+      ? `token=${encodeURIComponent(token)}`
+      : paymentId
       ? `payment_id=${encodeURIComponent(paymentId)}`
       : `preference_id=${encodeURIComponent(preferenceId ?? "")}`;
 

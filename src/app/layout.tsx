@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: "%s | Academia RH",
   },
   description:
-    "Academia RH é um espaço de desenvolvimento e capacitação para profissionais e empresas que desejam aprender, praticar e transformar a gestão de pessoas. Evento presencial com Talita Maia em Bauru/SP. 17 de outubro de 2026, das 08h às 13h, na Universidade Anhembi Morumbi. Coffee break incluso. Vagas limitadas a 50 participantes.",
+    "Academia RH é um espaço de desenvolvimento e capacitação para profissionais e empresas que desejam aprender, praticar e transformar a gestão de pessoas. Evento presencial com Talita Maia em Bauru/SP. 17 de outubro de 2026, das 08h às 13h, na Universidade Anhembi Morumbi. Coffee break incluso. Vagas limitadas.",
   keywords: [
     "Academia RH",
     "Talita Maia",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Academia RH | Desenvolvimento e capacitação em Gestão de Pessoas",
     description:
-      "Conhecimento vira prática, profissionais ganham segurança e empresas constroem resultados melhores por meio das pessoas. Evento presencial em Bauru/SP com Talita Maia em 17 de outubro de 2026. Coffee break incluso. Vagas limitadas a 50 participantes.",
+      "Conhecimento vira prática, profissionais ganham segurança e empresas constroem resultados melhores por meio das pessoas. Evento presencial em Bauru/SP com Talita Maia em 17 de outubro de 2026. Coffee break incluso. Vagas limitadas.",
     type: "website",
     locale: "pt_BR",
     siteName: "Academia RH",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Academia RH | Desenvolvimento e capacitação em Gestão de Pessoas",
     description:
-      "Conhecimento vira prática, profissionais ganham segurança e empresas constroem resultados melhores por meio das pessoas. Evento presencial em Bauru/SP em 17 de outubro de 2026. Vagas limitadas a 50 participantes.",
+      "Conhecimento vira prática, profissionais ganham segurança e empresas constroem resultados melhores por meio das pessoas. Evento presencial em Bauru/SP em 17 de outubro de 2026. Vagas limitadas.",
     images: ["/images/og-image.svg"],
   },
   robots: {

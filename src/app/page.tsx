@@ -10,6 +10,7 @@ import { RegistrationSection } from "@/components/sections/registration";
 import { FAQ } from "@/components/sections/faq";
 import { MobileStickyCta } from "@/components/mobile-sticky-cta";
 import { eventConfig } from "@/lib/event-config";
+import { jsonLdSafe } from "@/lib/security";
 
 async function getEventData() {
   try {
@@ -36,10 +37,7 @@ async function getEventData() {
 
     return {
       event,
-      spotsLeft,
-      confirmedCount,
       isSoldOut: spotsLeft <= 0,
-      isLastSpots: spotsLeft > 0 && spotsLeft <= 10,
     };
   } catch {
     return null;
@@ -66,9 +64,7 @@ export default async function HomePage() {
   };
 
   const event = data?.event ?? fallbackEvent;
-  const spotsLeft = data?.spotsLeft ?? event.capacity;
   const isSoldOut = data?.isSoldOut ?? false;
-  const isLastSpots = data?.isLastSpots ?? false;
   const loading = false;
 
   return (
@@ -77,9 +73,7 @@ export default async function HomePage() {
       <main className="flex-1 pb-20 md:pb-0">
         <Hero
           event={event}
-          spotsLeft={spotsLeft}
           isSoldOut={isSoldOut}
-          isLastSpots={isLastSpots}
           loading={loading}
         />
         <About />
@@ -88,9 +82,7 @@ export default async function HomePage() {
         <EventInfo event={event} />
         <RegistrationSection
           event={event}
-          spotsLeft={spotsLeft}
           isSoldOut={isSoldOut}
-          isLastSpots={isLastSpots}
           loading={loading}
         />
         <FAQ />
@@ -101,7 +93,7 @@ export default async function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: jsonLdSafe({
             "@context": "https://schema.org",
             "@type": "Event",
             name: eventConfig.name,

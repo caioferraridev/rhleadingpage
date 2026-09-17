@@ -466,6 +466,7 @@ export async function sendTestEmail(opts: {
     phone: null,
     mercadopago_payment_id: null,
     mercadopago_preference_id: null,
+    confirmation_token: null,
     amount_paid: event.price,
     payment_status: "paid",
     registration_status: "confirmed",

@@ -19,10 +19,7 @@ function fallbackResponse() {
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     },
-    confirmed_count: 0,
-    spots_left: eventConfig.capacity,
     is_sold_out: false,
-    is_last_spots: eventConfig.capacity <= 10,
     from_fallback: true,
   });
 }
@@ -64,14 +61,11 @@ export async function GET() {
       );
     }
 
-    const spots_left = event.capacity - (confirmed_count ?? 0);
+    const spotsLeft = event.capacity - (confirmed_count ?? 0);
 
     return NextResponse.json({
       event,
-      confirmed_count: confirmed_count ?? 0,
-      spots_left,
-      is_sold_out: spots_left <= 0,
-      is_last_spots: spots_left > 0 && spots_left <= 10,
+      is_sold_out: spotsLeft <= 0,
     });
   } catch (error) {
     console.error("Availability error:", error);

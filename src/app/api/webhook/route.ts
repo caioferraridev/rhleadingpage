@@ -3,21 +3,27 @@ import { WebhookSignatureValidator } from "mercadopago";
 import { getAdminClient } from "@/lib/supabase/server";
 import { getPayment } from "@/lib/mercadopago";
 import { sendConfirmationEmails } from "@/lib/emails/service";
+import { readJsonBody, errorStatus } from "@/lib/security";
 
 export async function POST(request: NextRequest) {
   let body: {
     type?: string;
     action?: string;
-    data?: { id?: number };
+    data?: { id?: number | string };
   };
   try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    body = (await readJsonBody(request, 32768)) as typeof body;
+  } catch (err) {
+    const status = errorStatus(err);
+    return NextResponse.json(
+      { error: status === 413 ? "Payload too large" : "Invalid JSON" },
+      { status }
+    );
   }
 
   // Optional: validate the HMAC signature if a secret signature is configured.
   // Mercado Pago signed webhooks send `x-signature` + `x-request-id` headers.
+  // Recomendado: configure MERCADOPAGO_WEBHOOK_SECRET para impedir webhooks forjados.
   const webhookSecret = process.env.MERCADOPAGO_WEBHOOK_SECRET;
   if (webhookSecret) {
     try {
@@ -35,7 +41,9 @@ export async function POST(request: NextRequest) {
   }
 
   const type = body.type ?? body.action;
-  const paymentId = body.data?.id;
+  const paymentId = typeof body.data?.id === "string" || typeof body.data?.id === "number"
+    ? String(body.data.id)
+    : "";
 
   // We only act on payment notifications. Everything else (plans, orders, tests)
   // is acknowledged and ignored.

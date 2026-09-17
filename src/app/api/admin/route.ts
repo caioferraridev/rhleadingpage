@@ -1,18 +1,38 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminClient } from "@/lib/supabase/server";
+import { safeEqual } from "@/lib/security";
+import { enforceRateLimit, getClientIp, resetRateLimit } from "@/lib/rate-limit";
+
+const ADMIN_FAIL_LIMIT = 10;
+const ADMIN_FAIL_WINDOW_MS = 15 * 60 * 1000;
 
 export async function GET(request: NextRequest) {
-  try {
-    const authHeader = request.headers.get("authorization");
-    const adminPassword = process.env.ADMIN_PASSWORD;
+  const ip = getClientIp(request);
+  const authHeader = request.headers.get("authorization") ?? "";
+  const adminPassword = process.env.ADMIN_PASSWORD ?? "";
 
-    if (!adminPassword || authHeader !== `Bearer ${adminPassword}`) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const authed = adminPassword && safeEqual(authHeader, `Bearer ${adminPassword}`);
+
+  if (!authed) {
+    const rate = await enforceRateLimit({
+      key: `admin_fail:${ip}`,
+      limit: ADMIN_FAIL_LIMIT,
+      windowMs: ADMIN_FAIL_WINDOW_MS,
+    });
+    if (!rate.allowed) {
+      return NextResponse.json(
+        { error: "Muitas tentativas. Aguarde alguns minutos." },
+        { status: 429 }
+      );
     }
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
+  await resetRateLimit(`admin_fail:${ip}`);
+
+  try {
     const supabase = getAdminClient();
 
-    // Get event
     const { data: event, error: eventError } = await supabase
       .from("events")
       .select("*")
@@ -26,7 +46,6 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Get confirmed registrations
     const { data: registrations, error: regError } = await supabase
       .from("registrations")
       .select("*")
@@ -37,7 +56,6 @@ export async function GET(request: NextRequest) {
       console.error("Registrations error:", regError);
     }
 
-    // Get waitlist
     const { data: waitlist, error: waitError } = await supabase
       .from("waitlist")
       .select("*")

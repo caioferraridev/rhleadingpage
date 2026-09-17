@@ -29,6 +29,9 @@ export function CheckoutForm({ onSubmit, onCancel }: CheckoutFormProps) {
 
     try {
       const url = await onSubmit({ name, email, phone });
+      if (!/^https?:\/\//i.test(url)) {
+        throw new Error("URL de pagamento inválida.");
+      }
       window.location.href = url;
     } catch (err) {
       if (

@@ -22,6 +22,7 @@ export interface Registration {
   phone: string | null;
   mercadopago_payment_id: string | null;
   mercadopago_preference_id: string | null;
+  confirmation_token: string | null;
   amount_paid: number;
   payment_status: "pending" | "paid" | "failed" | "refunded";
   registration_status: "pending" | "confirmed" | "cancelled";
@@ -57,10 +58,8 @@ export interface EmailNotification {
 
 export interface EventAvailability {
   event: Event;
-  confirmed_count: number;
-  spots_left: number;
   is_sold_out: boolean;
-  is_last_spots: boolean;
+  from_fallback?: boolean;
 }
 
 export interface ReserveSpotResult {

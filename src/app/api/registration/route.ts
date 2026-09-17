@@ -1,17 +1,38 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminClient } from "@/lib/supabase/server";
+import { enforceRateLimit, getClientIp } from "@/lib/rate-limit";
+
+const TOKEN_PATTERN = /^[a-f0-9]{48,64}$/i;
 
 export async function GET(request: NextRequest) {
+  const ip = getClientIp(request);
+  const rate = await enforceRateLimit({
+    key: `reg_lookup:${ip}`,
+    limit: 60,
+    windowMs: 60 * 1000,
+  });
+  if (!rate.allowed) {
+    return NextResponse.json(
+      { error: "Muitas requisições. Tente novamente em instantes." },
+      { status: 429 }
+    );
+  }
+
+  const token = request.nextUrl.searchParams.get("token");
   const paymentId =
     request.nextUrl.searchParams.get("payment_id") ??
     request.nextUrl.searchParams.get("collection_id");
   const preferenceId = request.nextUrl.searchParams.get("preference_id");
 
-  if (!paymentId && !preferenceId) {
+  if (!token && !paymentId && !preferenceId) {
     return NextResponse.json(
       { error: "Identificador do pedido é obrigatório." },
       { status: 400 }
     );
+  }
+
+  if (token && !TOKEN_PATTERN.test(token)) {
+    return NextResponse.json({ error: "Token inválido." }, { status: 400 });
   }
 
   try {
@@ -20,10 +41,12 @@ export async function GET(request: NextRequest) {
       .from("registrations")
       .select("*, events(name, event_date, start_time, end_time, location, address)");
 
-    if (paymentId) {
+    if (token) {
+      query = query.eq("confirmation_token", token);
+    } else if (paymentId) {
       query = query.eq("mercadopago_payment_id", paymentId);
     } else {
-      query = query.eq("mercadopago_preference_id", preferenceId);
+      query = query.eq("mercadopago_preference_id", preferenceId!);
     }
 
     const { data: registration, error } = await query.single();
