@@ -46,7 +46,8 @@ export const eventConfig = {
       "Administradora e Especialista em Gestão de Pessoas",
       "Atuação em recrutamento, desenvolvimento de pessoas, liderança e gestão estratégica",
     ],
-    imageUrl: "/images/palestrante.jpeg",
+    imageUrl: "/images/palestrante.webp",
+    imageAlt: "Talita Maia, palestrante do treinamento de Recrutamento e Seleção da Academia RH em Bauru",
   },
 
   // Benefits — what the participant takes away from this experience

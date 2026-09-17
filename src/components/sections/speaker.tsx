@@ -32,7 +32,7 @@ export function Speaker() {
               <div className="relative rounded-[1.5rem] overflow-hidden shadow-2xl aspect-[2/3] max-w-md mx-auto border border-white/10">
                 <Image
                   src={speaker.imageUrl}
-                  alt={speaker.name}
+                  alt={speaker.imageAlt}
                   fill
                   sizes="(max-width: 1024px) 100vw, 45vw"
                   className="object-cover"

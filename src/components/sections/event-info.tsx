@@ -102,7 +102,7 @@ export function EventInfo({ event }: { event: Event }) {
             <Users className="w-5 h-5 text-teal-300" />
           </span>
           <p className="font-semibold text-center text-white/95">
-            Evento presencial exclusivo · Vagas limitadas
+            Treinamento de Recrutamento e Seleção em Bauru · Evento presencial exclusivo · Vagas limitadas
           </p>
         </div>
       </Reveal>

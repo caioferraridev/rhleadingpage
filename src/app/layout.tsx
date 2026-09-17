@@ -13,11 +13,14 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Academia RH | Recrutamento e Seleção na Prática",
+    default: "Academia RH | Recrutamento e Seleção em Bauru",
     template: "%s | Academia RH",
   },
   description:
-    "A Academia RH é um espaço de desenvolvimento e capacitação que transforma conhecimento em prática. Nesta primeira edição, o treinamento é dedicado a Recrutamento e Seleção. Evento presencial com Talita Maia em Bauru/SP. 17 de outubro de 2026, das 08h às 13h, na Universidade Anhembi Morumbi. Coffee break incluso. Vagas limitadas.",
+    "Treinamento de Recrutamento e Seleção em Bauru, dia 17/10, com Talita Maia. Aprenda na prática e garanta sua vaga.",
+  alternates: {
+    canonical: `${SITE_URL}/`,
+  },
   keywords: [
     "Academia RH",
     "Talita Maia",
@@ -34,10 +37,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Academia RH | Recrutamento e Seleção na Prática",
     description:
-      "Nesta primeira edição, o treinamento é dedicado a Recrutamento e Seleção, com abordagem prática para quem deseja aprender, aprimorar ou entender os processos de contratação. Evento presencial em Bauru/SP com Talita Maia em 17 de outubro de 2026. Coffee break incluso. Vagas limitadas.",
+      "Treinamento de Recrutamento e Seleção em Bauru, dia 17/10, com Talita Maia. Aprenda na prática e garanta sua vaga.",
     type: "website",
     locale: "pt_BR",
     siteName: "Academia RH",
+    url: `${SITE_URL}/`,
     images: [
       {
         url: "/images/og-image.svg",

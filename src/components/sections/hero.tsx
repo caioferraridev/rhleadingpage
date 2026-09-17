@@ -119,7 +119,7 @@ export function Hero({ event, isSoldOut, loading }: HeroProps) {
               <div className="relative rounded-[1.6rem] overflow-hidden shadow-[0_40px_80px_-30px_rgba(1,33,74,0.5)] border-4 border-white aspect-[4/5] bg-navy-100">
                 <Image
                   src={eventConfig.speaker.imageUrl}
-                  alt={eventConfig.speaker.name}
+                  alt={eventConfig.speaker.imageAlt}
                   fill
                   sizes="(max-width: 1024px) 100vw, 45vw"
                   className="object-cover"
