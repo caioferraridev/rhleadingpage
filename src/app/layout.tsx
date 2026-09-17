@@ -12,29 +12,28 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   title: {
-    default: "Academia RH | Desenvolvimento e capacitação em Gestão de Pessoas",
+    default: "Academia RH | Recrutamento e Seleção na Prática",
     template: "%s | Academia RH",
   },
   description:
-    "Academia RH é um espaço de desenvolvimento e capacitação para profissionais e empresas que desejam aprender, praticar e transformar a gestão de pessoas. Evento presencial com Talita Maia em Bauru/SP. 17 de outubro de 2026, das 08h às 13h, na Universidade Anhembi Morumbi. Coffee break incluso. Vagas limitadas.",
+    "A Academia RH é um espaço de desenvolvimento e capacitação que transforma conhecimento em prática. Nesta primeira edição, o treinamento é dedicado a Recrutamento e Seleção. Evento presencial com Talita Maia em Bauru/SP. 17 de outubro de 2026, das 08h às 13h, na Universidade Anhembi Morumbi. Coffee break incluso. Vagas limitadas.",
   keywords: [
     "Academia RH",
     "Talita Maia",
-    "gestão de pessoas",
-    "capacitação de RH",
+    "recrutamento e seleção",
     "recrutamento",
-    "desenvolvimento de pessoas",
-    "liderança",
-    "RH estratégico",
+    "seleção de profissionais",
+    "processo seletivo",
+    "capacitação de RH",
     "evento presencial RH",
     "Bauru",
     "Universidade Anhembi Morumbi",
   ],
   authors: [{ name: "Academia RH" }],
   openGraph: {
-    title: "Academia RH | Desenvolvimento e capacitação em Gestão de Pessoas",
+    title: "Academia RH | Recrutamento e Seleção na Prática",
     description:
-      "Conhecimento vira prática, profissionais ganham segurança e empresas constroem resultados melhores por meio das pessoas. Evento presencial em Bauru/SP com Talita Maia em 17 de outubro de 2026. Coffee break incluso. Vagas limitadas.",
+      "Nesta primeira edição, o treinamento é dedicado a Recrutamento e Seleção, com abordagem prática para quem deseja aprender, aprimorar ou entender os processos de contratação. Evento presencial em Bauru/SP com Talita Maia em 17 de outubro de 2026. Coffee break incluso. Vagas limitadas.",
     type: "website",
     locale: "pt_BR",
     siteName: "Academia RH",
@@ -43,15 +42,15 @@ export const metadata: Metadata = {
         url: "/images/og-image.svg",
         width: 1200,
         height: 630,
-        alt: "Academia RH - Desenvolvimento e capacitação em Gestão de Pessoas",
+        alt: "Academia RH - Recrutamento e Seleção na Prática",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Academia RH | Desenvolvimento e capacitação em Gestão de Pessoas",
+    title: "Academia RH | Recrutamento e Seleção na Prática",
     description:
-      "Conhecimento vira prática, profissionais ganham segurança e empresas constroem resultados melhores por meio das pessoas. Evento presencial em Bauru/SP em 17 de outubro de 2026. Vagas limitadas.",
+      "Nesta primeira edição, o treinamento é dedicado a Recrutamento e Seleção. Evento presencial em Bauru/SP com Talita Maia em 17 de outubro de 2026. Vagas limitadas.",
     images: ["/images/og-image.svg"],
   },
   robots: {

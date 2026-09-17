@@ -9,9 +9,9 @@ export function WhoFor() {
       <Reveal>
         <SectionTitle
           eyebrow="Para quem é"
-          subtitle="Se você se identificou com alguma dessas situações, este encontro foi pensado para você."
+          subtitle="Se você se identificou com alguma dessas situações, este treinamento foi pensado para você."
         >
-          A Academia RH é para você que...
+          Esta 1ª edição é para você que...
         </SectionTitle>
       </Reveal>
 

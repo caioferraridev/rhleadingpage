@@ -12,7 +12,7 @@ const faqs = [
   {
     question: "Preciso ter experiência para participar?",
     answer:
-      "Não! A Academia RH foi pensada para profissionais e empresas que desejam aprender, praticar e transformar a gestão de pessoas. Não é necessário conhecimento prévio.",
+      "Não! Esta primeira edição é dedicada a Recrutamento e Seleção e foi pensada para profissionais e empresas que desejam aprender, praticar e aprimorar essa área. Não é necessário conhecimento prévio.",
   },
   {
     question: "O evento é presencial mesmo?",

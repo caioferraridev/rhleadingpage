@@ -90,8 +90,8 @@ function topicsHtml(): string {
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <td style="padding:8px 4px;">
-            <p style="margin:0 0 4px; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:#8a94a6;">O que você vai encontrar</p>
-            <p style="margin:0 0 10px; font-size:18px; font-weight:800; color:${NAVY};">Conteúdo da Academia RH</p>
+            <p style="margin:0 0 4px; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:#8a94a6;">O que você vai encontrar na 1ª edição</p>
+            <p style="margin:0 0 10px; font-size:18px; font-weight:800; color:${NAVY};">${eventConfig.editionTitle}</p>
             <ul style="margin:0; padding-left:18px;">${bullets}</ul>
           </td>
         </tr>

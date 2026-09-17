@@ -12,7 +12,7 @@ export function About() {
       <Reveal>
         <SectionTitle
           eyebrow="Sobre a Academia RH"
-          subtitle="Um espaço de desenvolvimento e capacitação para profissionais e empresas que desejam aprender, praticar e transformar a gestão de pessoas."
+          subtitle="A Academia RH é um espaço de desenvolvimento e capacitação que transforma conhecimento em prática, ajudando profissionais e empresas a desenvolverem uma gestão de pessoas mais preparada, estratégica e humana."
         >
           O que é a <span className="text-brand-gradient">Academia RH</span>?
         </SectionTitle>
@@ -21,12 +21,12 @@ export function About() {
       <Reveal delay={100}>
         <div className="mb-12 max-w-3xl mx-auto text-center">
           <p className="text-lg text-navy-600/80 leading-relaxed">
-            Academia RH é um espaço de desenvolvimento e capacitação para profissionais
-            e empresas que desejam aprender, praticar e transformar a gestão de pessoas.
+            Ao longo de sua trajetória, a Academia RH poderá abordar diferentes temas
+            relacionados à gestão de pessoas. Nesta primeira edição, o foco é
+            <span className="font-bold text-navy"> Recrutamento e Seleção</span>.
           </p>
-          <p className="text-lg text-navy-600/80 leading-relaxed mt-4 font-medium">
-            Na Academia RH, conhecimento vira prática, profissionais ganham segurança e
-            empresas constroem resultados melhores por meio das pessoas.
+          <p className="text-lg text-navy-600/80 leading-relaxed mt-4">
+            {eventConfig.editionFocus}
           </p>
         </div>
       </Reveal>

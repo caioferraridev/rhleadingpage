@@ -14,8 +14,8 @@ export function Footer() {
           <div>
             <BrandLogo variant="light" className="mb-4" />
             <p className="text-sm leading-relaxed max-w-xs">
-              Um espaço de desenvolvimento e capacitação para profissionais e empresas
-              que desejam aprender, praticar e transformar a gestão de pessoas.
+              Um espaço de desenvolvimento e capacitação que transforma conhecimento
+              em prática — nesta 1ª edição, dedicada a Recrutamento e Seleção.
             </p>
           </div>
 

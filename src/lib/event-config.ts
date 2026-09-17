@@ -2,7 +2,12 @@ export const eventConfig = {
   name: "Academia RH",
   tagline: "Desenvolvimento e capacitação para profissionais e empresas",
   description:
-    "Academia RH é um espaço de desenvolvimento e capacitação para profissionais e empresas que desejam aprender, praticar e transformar a gestão de pessoas.",
+    "A Academia RH é um espaço de desenvolvimento e capacitação que transforma conhecimento em prática, ajudando profissionais e empresas a desenvolverem uma gestão de pessoas mais preparada, estratégica e humana.",
+
+  // First edition focus — this is NOT a generic RH course
+  editionFocus:
+    "Nesta primeira edição, o treinamento será dedicado a Recrutamento e Seleção, trazendo uma abordagem prática para quem deseja aprender, aprimorar ou entender melhor os processos de contratação e escolha de profissionais.",
+  editionTitle: "Recrutamento e Seleção na Prática",
 
   // Event Details
   date: "2026-10-17",
@@ -37,27 +42,27 @@ export const eventConfig = {
     imageUrl: "/images/palestrante.jpeg",
   },
 
-  // Benefits
+  // Benefits — 1st edition: Recrutamento e Seleção
   benefits: [
     {
-      title: "Conhecimento prático",
-      description: "Aprenda na prática como aplicar os principais conceitos e ferramentas de RH no dia a dia.",
+      title: "Conhecimento prático em R&S",
+      description: "Aprenda na prática como aplicar as melhores técnicas de recrutamento e seleção no dia a dia.",
     },
     {
-      title: "Gestão de Pessoas",
-      description: "Desenvolva habilidades essenciais para gerir pessoas com estratégia e humanização.",
+      title: "Processos seletivos eficazes",
+      description: "Saiba como estruturar e conduzir processos seletivos que atraem e identificam os melhores talentos.",
     },
     {
-      title: "Recrutamento e Seleção",
-      description: "Entenda como funciona o recrutamento do ponto de vista de quem contrata e seleciona.",
+      title: "Técnicas de entrevista e avaliação",
+      description: "Domine ferramentas e abordagens para avaliar candidatos com precisão e reduzir erros de contratação.",
     },
     {
-      title: "Desenvolvimento de Pessoas",
-      description: "Conheça práticas para desenvolver talentos e reter profissionais nas organizações.",
+      title: "Visão do mercado de trabalho",
+      description: "Compreenda como o recrutamento se conecta com as necessidades reais das organizações e do mercado.",
     },
     {
       title: "Networking presencial",
-      description: "Conecte-se com outros profissionais e especialistas da área de RH.",
+      description: "Conecte-se com outros profissionais e especialistas da área de RH e gestão de pessoas.",
     },
     {
       title: "Coffee Break incluso",
@@ -67,12 +72,12 @@ export const eventConfig = {
 
   // Who is it for
   targetAudience: [
-    "Profissionais de RH que querem se atualizar",
-    "Quer iniciar uma carreira na área de RH",
-    "Gestores que lidam com pessoas e querem se capacitar",
-    "Estudantes de Administração, Psicologia ou áreas afins",
-    "Empreendedores que querem melhorar a gestão de pessoas",
-    "Quer fazer networking presencial com profissionais da área",
+    "Você trabalha com RH e quer aprimorar seus conhecimentos em Recrutamento e Seleção?",
+    "Está começando na área de Recursos Humanos e quer aprender, na prática, como funciona um processo seletivo?",
+    "Você é gestor, líder ou empreendedor e participa da contratação de pessoas na sua empresa?",
+    "Não trabalha diretamente com RH ou gestão, mas quer aprender a lidar melhor com pessoas e entender mais sobre processos de contratação?",
+    "Quer desenvolver uma visão mais prática sobre como identificar, avaliar e selecionar profissionais?",
+    "Estudantes de Administração, Psicologia ou áreas afins que buscam se preparar para o mercado de trabalho?",
   ],
 
   // Urgency messages

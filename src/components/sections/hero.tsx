@@ -48,14 +48,15 @@ export function Hero({ event, isSoldOut, loading }: HeroProps) {
             <SpotsIndicator isSoldOut={isSoldOut} loading={loading} />
 
             <h1 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-black text-navy leading-[1.08] mt-6 mb-5 tracking-tight">
-              Transforme a <span className="text-brand-gradient">gestão de pessoas</span>{" "}
-              e construa resultados melhores.
+              <span className="text-brand-gradient">Recrutamento e Seleção</span> na prática,
+              do jeito certo.
             </h1>
 
             <p className="text-lg md:text-xl text-navy-600/80 leading-relaxed max-w-xl mb-8">
-              Um espaço de desenvolvimento e capacitação para quem deseja aprender,
-              praticar e transformar a gestão de pessoas. Conhecimento vira prática,
-              profissionais ganham segurança e empresas constroem resultados melhores.
+              A Academia RH é um espaço de desenvolvimento e capacitação que transforma
+              conhecimento em prática. Nesta primeira edição, o treinamento é dedicado a
+              Recrutamento e Seleção, para quem quer aprender, aprimorar ou entender
+              melhor os processos de contratação.
             </p>
 
             {/* Event meta */}

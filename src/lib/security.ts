@@ -2,9 +2,9 @@ import { NextRequest } from "next/server";
 import { timingSafeEqual } from "crypto";
 
 export function safeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
   const ab = Buffer.from(a, "utf8");
   const bb = Buffer.from(b, "utf8");
+  if (ab.length !== bb.length) return false;
   return timingSafeEqual(ab, bb);
 }
 

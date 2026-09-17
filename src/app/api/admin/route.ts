@@ -9,7 +9,13 @@ const ADMIN_FAIL_WINDOW_MS = 15 * 60 * 1000;
 export async function GET(request: NextRequest) {
   const ip = getClientIp(request);
   const authHeader = request.headers.get("authorization") ?? "";
-  const adminPassword = process.env.ADMIN_PASSWORD ?? "";
+  const adminPassword = (process.env.ADMIN_PASSWORD ?? "").trim();
+
+  if (!adminPassword) {
+    console.error(
+      "[admin] ADMIN_PASSWORD não configurada no ambiente do servidor. Configure a variável ADMIN_PASSWORD para habilitar o acesso."
+    );
+  }
 
   const authed = adminPassword && safeEqual(authHeader, `Bearer ${adminPassword}`);
 
@@ -73,6 +79,16 @@ export async function GET(request: NextRequest) {
           r.payment_status === "paid"
       ).length ?? 0;
 
+    const cancelled_count =
+      registrations?.filter(
+        (r) => r.registration_status === "cancelled"
+      ).length ?? 0;
+
+    const total_received =
+      registrations
+        ?.filter((r) => r.payment_status === "paid")
+        .reduce((sum, r) => sum + (Number(r.amount_paid) || 0), 0) ?? 0;
+
     return NextResponse.json({
       event,
       registrations: registrations ?? [],
@@ -86,6 +102,8 @@ export async function GET(request: NextRequest) {
         failed:
           registrations?.filter((r) => r.payment_status === "failed").length ??
           0,
+        cancelled: cancelled_count,
+        total_received,
         spots_left: event.capacity - confirmed_count,
         waitlist_count: waitlist?.length ?? 0,
       },

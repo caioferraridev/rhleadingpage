@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
 
   const header = request.headers.get("authorization") ?? "";
   const cronSecret = getCronSecret();
-  const adminPassword = process.env.ADMIN_PASSWORD ?? "";
+  const adminPassword = (process.env.ADMIN_PASSWORD ?? "").trim();
 
   const authed =
     (cronSecret && safeEqual(header, `Bearer ${cronSecret}`)) ||

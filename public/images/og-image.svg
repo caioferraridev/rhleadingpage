@@ -16,9 +16,9 @@
   <rect x="110" y="120" width="64" height="64" rx="16" fill="url(#accent)"/>
   <text x="146" y="164" font-family="Arial, sans-serif" font-size="34" font-weight="bold" fill="#011b3a" text-anchor="middle">RH</text>
   <text x="200" y="160" font-family="Arial, sans-serif" font-size="46" font-weight="bold" fill="#ffffff">Academia RH</text>
-  <text x="110" y="320" font-family="Arial, sans-serif" font-size="78" font-weight="bold" fill="#ffffff">Seu primeiro passo no</text>
-  <text x="110" y="395" font-family="Arial, sans-serif" font-size="78" font-weight="bold" fill="#18a89c">mundo do RH começa aqui.</text>
-  <text x="110" y="470" font-family="Arial, sans-serif" font-size="34" fill="#d2f3ef" opacity="0.95">Palestra presencial de RH &amp; recrutamento para iniciantes · Bauru/SP</text>
+  <text x="110" y="320" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="#ffffff">Recrutamento e Seleção</text>
+  <text x="110" y="395" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="#18a89c">na prática.</text>
+  <text x="110" y="470" font-family="Arial, sans-serif" font-size="34" fill="#d2f3ef" opacity="0.95">1ª edição da Academia RH · Palestra presencial de recrutamento · Bauru/SP</text>
   <rect x="110" y="515" width="300" height="60" rx="12" fill="url(#accent)"/>
   <text x="260" y="555" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#ffffff" text-anchor="middle">VAGAS LIMITADAS · 50</text>
 </svg>
