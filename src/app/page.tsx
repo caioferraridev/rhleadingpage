@@ -3,6 +3,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
+import { Experience } from "@/components/sections/experience";
 import { WhoFor } from "@/components/sections/who-for";
 import { Speaker } from "@/components/sections/speaker";
 import { EventInfo } from "@/components/sections/event-info";
@@ -78,6 +79,7 @@ export default async function HomePage() {
           loading={loading}
         />
         <About />
+        <Experience />
         <WhoFor />
         <Speaker />
         <EventInfo event={event} />

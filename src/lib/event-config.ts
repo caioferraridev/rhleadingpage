@@ -49,31 +49,31 @@ export const eventConfig = {
     imageUrl: "/images/palestrante.jpeg",
   },
 
-  // Benefits — elements of the participant experience in this first edition
+  // Benefits — what the participant takes away from this experience
   benefits: [
     {
-      title: "Conhecimento prático",
-      description: "Conteúdo aplicado e baseado em experiências reais de mais de 20 anos de atuação em Recursos Humanos.",
+      title: "Conhecimento Prático",
+      description: "Aprendizado conectado à realidade do mercado.",
     },
     {
       title: "Networking",
-      description: "Troque experiências com profissionais, gestores e pessoas que atuam ou querem atuar com processos seletivos.",
+      description: "Oportunidade de conhecer e trocar experiências com outros profissionais.",
     },
     {
-      title: "Novos insights",
-      description: "Tenha novas perspectivas sobre contratação, seleção e sobre o papel das pessoas nas organizações.",
+      title: "Novos Insights",
+      description: "Ideias e perspectivas para aplicar na sua atuação profissional.",
     },
     {
-      title: "Desenvolvimento profissional",
-      description: "Aprofunde competências e ganhe mais segurança para conduzir processos de Recrutamento e Seleção.",
+      title: "Desenvolvimento Profissional",
+      description: "Mais preparo e segurança para os desafios da carreira.",
     },
     {
-      title: "Certificado de participação",
-      description: "Receba o certificado da primeira edição da Academia RH como registro da sua participação.",
+      title: "Certificado de Participação",
+      description: "Registro da sua participação em uma experiência de capacitação profissional.",
     },
     {
-      title: "Coffee break",
-      description: "Aproveite o intervalo para networking e troca de experiências com os demais participantes.",
+      title: "Coffee Break",
+      description: "Um momento para fazer uma pausa, conversar e trocar experiências durante o encontro.",
     },
   ],
 
