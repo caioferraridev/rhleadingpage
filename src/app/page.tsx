@@ -11,6 +11,7 @@ import { FAQ } from "@/components/sections/faq";
 import { MobileStickyCta } from "@/components/mobile-sticky-cta";
 import { eventConfig } from "@/lib/event-config";
 import { jsonLdSafe } from "@/lib/security";
+import { SITE_URL } from "@/lib/site-url";
 
 async function getEventData() {
   try {
@@ -114,7 +115,7 @@ export default async function HomePage() {
             },
             offers: {
               "@type": "Offer",
-              url: `${process.env.NEXT_PUBLIC_APP_URL}/`,
+              url: `${SITE_URL}/`,
               price: event.price / 100,
               priceCurrency: "BRL",
               availability:
