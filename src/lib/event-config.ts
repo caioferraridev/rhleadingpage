@@ -33,6 +33,9 @@ export const eventConfig = {
   whatsappMessage: "Olá! Gostaria de saber mais informações sobre a Academia RH.",
   whatsappGroupLink: "https://chat.whatsapp.com/JNmg9TsZiTuJLDTX2iaSxF?s=cl&p=i&mlu=4&ilr=4",
 
+  // Meta Pixel — ID público de medição de tráfego (não é um segredo)
+  metaPixelId: "1098622605963123",
+
   // Speaker
   speaker: {
     name: "Talita Maia",

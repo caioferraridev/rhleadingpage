@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { WhatsAppFloat } from "@/components/whatsapp-float";
+import { MetaPixel } from "@/components/meta-pixel";
 import { SITE_URL } from "@/lib/site-url";
 
 const inter = Inter({
@@ -80,6 +81,7 @@ export default function RootLayout({
       <body className="font-sans antialiased bg-white text-navy-800 min-h-screen flex flex-col">
         {children}
         <WhatsAppFloat />
+        <MetaPixel />
       </body>
     </html>
   );
