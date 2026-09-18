@@ -3,6 +3,8 @@ import { WebhookSignatureValidator } from "mercadopago";
 import { getAdminClient } from "@/lib/supabase/server";
 import { getPayment } from "@/lib/mercadopago";
 import { sendConfirmationEmails } from "@/lib/emails/service";
+import { sendPurchaseEvent } from "@/lib/meta-pixel-server";
+import { eventConfig } from "@/lib/event-config";
 import { readJsonBody, errorStatus } from "@/lib/security";
 
 export async function POST(request: NextRequest) {
@@ -103,6 +105,32 @@ export async function POST(request: NextRequest) {
       }
 
       console.log("Registration confirmed:", result);
+
+      try {
+        const { data: metaRegistration } = await supabase
+          .from("registrations")
+          .select("id, email, phone, event_id, amount_paid")
+          .eq("id", registrationId)
+          .maybeSingle();
+
+        if (metaRegistration) {
+          const approvedValue =
+            typeof payment.transaction_amount === "number" &&
+            payment.transaction_amount > 0
+              ? payment.transaction_amount
+              : (metaRegistration.amount_paid || eventConfig.price) / 100;
+
+          await sendPurchaseEvent({
+            registrationId: metaRegistration.id,
+            email: metaRegistration.email,
+            phone: metaRegistration.phone,
+            valueBRL: approvedValue,
+            contentIds: [`event-${metaRegistration.event_id}`],
+          });
+        }
+      } catch (metaErr) {
+        console.error("Meta Purchase (CAPI) falhou (não-bloqueante):", metaErr);
+      }
 
       // Dispara os emails de confirmação (participante + administrador).
       // Erros de email NUNCA quebram a resposta do webhook.

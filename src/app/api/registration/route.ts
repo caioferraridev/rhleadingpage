@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     const supabase = getAdminClient();
     let query = supabase
       .from("registrations")
-      .select("*, events(name, event_date, start_time, end_time, location, address)");
+      .select("*, events(id, name, event_date, start_time, end_time, location, address)");
 
     if (token) {
       query = query.eq("confirmation_token", token);
@@ -64,8 +64,10 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       registration: {
+        id: registration.id,
         name: registration.name,
         email: registration.email,
+        amount_paid: registration.amount_paid,
         is_confirmed: isConfirmed,
         status: registration.registration_status,
         payment_status: registration.payment_status,

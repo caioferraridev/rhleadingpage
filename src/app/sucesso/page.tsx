@@ -17,16 +17,21 @@ import {
 import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
 import { WHATSAPP_GROUP_LINK } from "@/lib/whatsapp";
 import { formatDate, formatTime } from "@/lib/utils";
+import { firePurchase } from "@/lib/meta-pixel-client";
+import { eventConfig } from "@/lib/event-config";
 
 type RegistrationData = {
   registration: {
+    id: string;
     name: string;
     email: string;
+    amount_paid: number;
     is_confirmed: boolean;
     status: string;
     payment_status: string;
   };
   event: {
+    id: string;
     name: string;
     event_date: string;
     start_time: string;
@@ -70,6 +75,11 @@ export default function SuccessPage() {
         const json = await res.json();
 
         if (res.ok && json.registration?.is_confirmed) {
+          firePurchase({
+            registrationId: json.registration.id,
+            valueBRL: (json.registration.amount_paid ?? eventConfig.price) / 100,
+            contentIds: json.event?.id ? [`event-${json.event.id}`] : undefined,
+          });
           if (!cancelled) setState({ loading: false, data: json, error: null });
           return;
         }

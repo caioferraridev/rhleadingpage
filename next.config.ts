@@ -7,11 +7,11 @@ const deploymentEnv = process.env.NODE_ENV;
 function securityHeaders() {
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline'",
+    "script-src 'self' 'unsafe-inline' https://connect.facebook.net",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob:",
     "font-src 'self' data:",
-    "connect-src 'self' ws:",
+    "connect-src 'self' ws: https://connect.facebook.net https://www.facebook.com",
     "frame-src 'self' https://*.mercadopago.com.br https://*.mercadopago.com https://*.mercadolibre.com",
     "object-src 'none'",
     "base-uri 'self'",
