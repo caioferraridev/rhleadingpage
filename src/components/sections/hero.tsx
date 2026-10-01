@@ -13,7 +13,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { eventConfig } from "@/lib/event-config";
-import { formatPrice, formatInstallment, formatDateShort, formatTime } from "@/lib/utils";
+import { formatPrice, formatDateShort, formatTime } from "@/lib/utils";
 import { SpotsIndicator } from "@/components/ui/spots-indicator";
 import { openRegistration } from "@/lib/registration-cta";
 import type { Event } from "@/types/database";
@@ -31,7 +31,8 @@ export function Hero({ event, isSoldOut, loading }: HeroProps) {
   };
 
   const total = formatPrice(event.price);
-  const installment = formatInstallment(event.price, eventConfig.installmentMonths);
+  const months = eventConfig.installmentMonths;
+  const installment = formatPrice(eventConfig.installmentPrice);
 
   return (
     <section
@@ -111,13 +112,16 @@ export function Hero({ event, isSoldOut, loading }: HeroProps) {
             <div className="rounded-2xl border border-navy-100 bg-white/80 backdrop-blur p-5 sm:p-6 mb-5">
               <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                 <p className="text-4xl font-black text-navy leading-none">
-                  {eventConfig.installmentMonths}x de {installment}
+                  {months}x de{" "}
+                  <span className="text-brand-gradient">{installment}</span>
                 </p>
                 <p className="text-sm font-semibold text-navy-600">no cartão de crédito</p>
               </div>
-              <p className="text-sm font-semibold text-navy-500 mt-2">
-                Total: <span className="text-navy-800">{total}</span>
-              </p>
+              <div className="mt-3 pt-3 border-t border-navy-100">
+                <p className="text-sm font-semibold text-navy-500">
+                  Ou <span className="text-navy-800 font-bold">{total}</span> à vista
+                </p>
+              </div>
             </div>
 
             <button

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEventAvailability } from "@/lib/hooks/use-event-availability";
-import { formatPrice, formatInstallment } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils";
 import { eventConfig } from "@/lib/event-config";
 import { openRegistration } from "@/lib/registration-cta";
 
@@ -34,10 +34,10 @@ export function MobileStickyCta() {
             <div className="min-w-0 shrink-0 leading-tight">
               <p className="text-[0.6rem] font-bold uppercase tracking-wide text-teal-700">
                 {eventConfig.installmentMonths}x de{" "}
-                {formatInstallment(price, eventConfig.installmentMonths)}
+                {formatPrice(eventConfig.installmentPrice)}
               </p>
               <p className="text-[0.7rem] text-navy-500">
-                Total {formatPrice(price)}
+                ou {formatPrice(price)} à vista
               </p>
             </div>
             <button

@@ -5,25 +5,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+/**
+ * Formata um valor monetário em centavos.
+ * 28900 -> "R$ 289,00" (total à vista) | 2941 -> "R$ 29,41" (parcela da oferta).
+ */
 export function formatPrice(cents: number): string {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
   }).format(cents / 100);
-}
-
-/**
- * Valor de uma parcela (em centavos / total de reais dividido pelas parcelas).
- * R$ 289,00 em 12x -> "R$ 24,08".
- * Não altera o valor total cobrado — apenas a forma de exibição.
- */
-export function formatInstallment(cents: number, months: number): string {
-  if (!months || months < 1) return formatPrice(cents);
-
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(cents / 100 / months);
 }
 
 export function formatDate(dateStr: string): string {

@@ -35,8 +35,17 @@ export const eventConfig = {
   coffeeBreak: true,
 
   // Pricing & Capacity
-  price: 28900, // R$ 289,00 em centavos
-  installmentMonths: 12, // 12x de R$ 24,08 no cartão de crédito
+  price: 28900, // R$ 289,00 em centavos — total à vista
+  installmentMonths: 12, // "12x" — condição de crédito exibida na landing page
+  // Valor da parcela anunciado na landing page, em centavos (R$ 29,41).
+  //
+  // É APENAS comunicação de oferta: NÃO é o valor enviado ao checkout.
+  // O Mercado Pago calcula as condições reais (taxas variam por quantidade de
+  // parcelas e forma de pagamento) e o valor cobrado continua sendo
+  // events.price. Ver src/lib/pricing.ts e src/app/api/checkout/route.ts.
+  //
+  // Ao alterar, confira o valor que o Mercado Pago exibe para 12x no checkout.
+  installmentPrice: 2941,
   capacity: 50,
 
   // WhatsApp

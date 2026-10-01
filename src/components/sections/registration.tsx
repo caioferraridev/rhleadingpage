@@ -8,7 +8,7 @@ import { CheckoutForm } from "@/components/checkout-form";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
 import { eventConfig } from "@/lib/event-config";
-import { formatPrice, formatInstallment } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 import { OPEN_REGISTRATION_EVENT } from "@/lib/registration-cta";
 import { fireInitiateCheckout } from "@/lib/meta-pixel-client";
@@ -33,7 +33,7 @@ export function RegistrationSection({
   const contentId = eventContentId(event.id);
   const total = formatPrice(event.price);
   const months = eventConfig.installmentMonths;
-  const installment = formatInstallment(event.price, months);
+  const installment = formatPrice(eventConfig.installmentPrice);
 
   // Todos os CTAs da página convergem para cá — mesmo formulário,
   // mesmo POST /api/checkout, mesmo redirecionamento para o Mercado Pago.
@@ -99,20 +99,20 @@ export function RegistrationSection({
                   Primeira edição · {eventConfig.editionTitle}
                 </p>
 
-                <div className="mt-6 flex items-center justify-center gap-2.5 text-teal-200">
+                <p className="mt-6 text-5xl md:text-6xl font-black leading-none">
+                  {months}x de <span className="text-teal-300">{installment}</span>
+                </p>
+
+                <p className="mt-3 flex items-center justify-center gap-2.5 text-teal-200">
                   <CreditCard className="w-5 h-5" aria-hidden />
                   <span className="text-sm font-bold uppercase tracking-wide">
                     No cartão de crédito
                   </span>
-                </div>
-
-                <p className="mt-2 text-4xl md:text-5xl font-black leading-none">
-                  {months}x de <span className="text-teal-300">{installment}</span>
                 </p>
 
                 <div className="mt-6 pt-5 border-t border-white/15 inline-block">
                   <p className="text-navy-100/70 text-xs uppercase tracking-widest">
-                    Total da inscrição
+                    Ou à vista
                   </p>
                   <p className="text-2xl font-black text-white">{total}</p>
                 </div>

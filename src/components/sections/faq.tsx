@@ -8,13 +8,13 @@ import { ChevronDown } from "lucide-react";
 import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 import { eventConfig } from "@/lib/event-config";
-import { cn, formatDate, formatInstallment, formatPrice, formatTime } from "@/lib/utils";
+import { cn, formatDate, formatPrice, formatTime } from "@/lib/utils";
 import type { Event } from "@/types/database";
 
 function buildFaqs(event: Event) {
   const total = formatPrice(event.price);
   const months = eventConfig.installmentMonths;
-  const installment = formatInstallment(event.price, months);
+  const installment = formatPrice(eventConfig.installmentPrice);
   const when = `${formatDate(event.event_date)}, das ${formatTime(event.start_time)} às ${formatTime(event.end_time)}`;
 
   return [
@@ -29,11 +29,11 @@ function buildFaqs(event: Event) {
     },
     {
       question: "Qual é o valor da inscrição?",
-      answer: `O investimento total é de ${total}, para a 1ª edição completa do treinamento.`,
+      answer: `O investimento é de ${total} à vista para a 1ª edição completa do treinamento, ou ${months}x de ${installment} no cartão de crédito.`,
     },
     {
       question: "Posso parcelar?",
-      answer: `Sim. Dá para pagar ${months}x de ${installment} no cartão de crédito. Você escolhe a melhor condição na tela de pagamento do Mercado Pago, que também aceita Pix, boleto e débito.`,
+      answer: `Sim. ${months}x de ${installment} no cartão de crédito, ou ${total} à vista. Você escolhe a melhor condição na tela de pagamento do Mercado Pago, que também aceita Pix, boleto e débito.`,
     },
     {
       question: "Como faço minha inscrição?",
