@@ -1,6 +1,7 @@
 import { Section, SectionTitle } from "@/components/ui/section";
 import { Card, CardIcon } from "@/components/ui/card";
 import { Reveal } from "@/components/ui/reveal";
+import { CtaButton } from "@/components/ui/cta-button";
 import { eventConfig } from "@/lib/event-config";
 import { Target, Handshake, Lightbulb, Rocket, BadgeCheck, Coffee } from "lucide-react";
 
@@ -8,10 +9,10 @@ const benefitIcons = [Target, Handshake, Lightbulb, Rocket, BadgeCheck, Coffee];
 
 export function Experience() {
   return (
-    <Section id="experiencia" className="bg-mist">
+    <Section id="beneficios" className="bg-mist">
       <Reveal>
-        <SectionTitle eyebrow="A experiência">
-          O que você leva dessa <span className="text-brand-gradient">experiência</span>
+        <SectionTitle eyebrow="Benefícios">
+          O que você <span className="text-brand-gradient">leva</span> do treinamento
         </SectionTitle>
       </Reveal>
 
@@ -31,6 +32,12 @@ export function Experience() {
           );
         })}
       </div>
+
+      <Reveal delay={120}>
+        <div className="mt-12 flex justify-center">
+          <CtaButton label="GARANTIR MINHA INSCRIÇÃO" size="lg" className="w-full sm:w-auto" />
+        </div>
+      </Reveal>
     </Section>
   );
 }

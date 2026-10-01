@@ -50,8 +50,8 @@ export function Footer() {
             </h4>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <Link href="#o-que-e" className="hover:text-white transition-colors">
-                  O que é a Academia RH
+                <Link href="#para-quem" className="hover:text-white transition-colors">
+                  Para quem é
                 </Link>
               </li>
               <li>

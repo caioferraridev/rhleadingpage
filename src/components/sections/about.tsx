@@ -1,5 +1,6 @@
 import { Section, SectionTitle } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
+import { eventConfig } from "@/lib/event-config";
 
 export function About() {
   return (
@@ -11,31 +12,12 @@ export function About() {
       </Reveal>
 
       <Reveal delay={100}>
-        <div className="max-w-3xl mx-auto text-center space-y-6">
-          <p className="text-lg text-navy-600/80 leading-relaxed">
-            A Academia RH nasceu de uma experiência construída ao longo de anos de
-            atuação em Recursos Humanos e da vontade de compartilhar aquilo que
-            realmente funciona na prática.
+        <div className="max-w-3xl mx-auto text-center space-y-7">
+          <p className="text-lg md:text-xl text-navy-600/80 leading-relaxed">
+            {eventConfig.aboutText}
           </p>
-          <p className="text-lg text-navy-600/80 leading-relaxed">
-            Mais do que transmitir conceitos, a proposta é criar experiências de
-            aprendizagem que aproximem o conhecimento dos desafios encontrados pelos
-            profissionais e pelas empresas no dia a dia.
-          </p>
-          <p className="text-2xl md:text-3xl font-black text-brand-gradient pt-1">
-            Aprender. Praticar. Transformar.
-          </p>
-          <p className="text-lg text-navy-600/80 leading-relaxed">
-            Esse é o propósito que guia a Academia RH.
-          </p>
-          <p className="text-lg text-navy-600/80 leading-relaxed">
-            E se você está buscando mais conhecimento, segurança e preparo para lidar
-            com pessoas e processos de contratação, essa experiência foi pensada para
-            você.
-          </p>
-          <p className="text-lg text-navy-600/80 leading-relaxed font-medium">
-            Venha aprender na prática, trocar experiências e dar um novo passo no seu
-            desenvolvimento profissional.
+          <p className="text-2xl md:text-3xl font-black text-brand-gradient">
+            {eventConfig.aboutStatement}
           </p>
         </div>
       </Reveal>

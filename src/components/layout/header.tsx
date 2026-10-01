@@ -6,10 +6,9 @@ import { BrandLogo } from "@/components/ui/brand-logo";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { href: "#o-que-e", label: "O que é" },
   { href: "#para-quem", label: "Para quem é" },
-  { href: "#palestrante", label: "Palestrante" },
-  { href: "#evento", label: "Data e Local" },
+  { href: "#beneficios", label: "Benefícios" },
+  { href: "#evento", label: "Data e local" },
   { href: "#faq", label: "Dúvidas" },
 ];
 

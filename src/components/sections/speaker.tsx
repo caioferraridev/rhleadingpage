@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Section, SectionTitle } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
 import { eventConfig } from "@/lib/event-config";
-import { Award, Briefcase, GraduationCap, Quote } from "lucide-react";
+import { Award, Briefcase, GraduationCap } from "lucide-react";
 
 const highlightIcons = [Briefcase, GraduationCap, Award];
 
@@ -21,11 +21,11 @@ export function Speaker() {
       <div className="relative">
         <Reveal>
           <SectionTitle className="[&_h2]:text-white [&_p]:text-navy-100/70" eyebrow="Palestrante">
-            Quem é <span className="text-teal-300">Talita Maia</span>?
+            Quem é <span className="text-teal-300">{speaker.name}</span>?
           </SectionTitle>
         </Reveal>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-10 lg:gap-14 items-center max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-10 lg:gap-14 items-center max-w-5xl mx-auto">
           <Reveal delay={100}>
             <div className="relative">
               <div className="absolute -inset-3 rounded-[1.8rem] bg-gradient-to-br from-teal-400/30 to-transparent" aria-hidden />
@@ -43,43 +43,35 @@ export function Speaker() {
 
           <Reveal delay={200}>
             <div>
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-10 h-10 rounded-xl bg-teal-500/15 flex items-center justify-center">
-                  <Quote className="w-5 h-5 text-teal-300" />
-                </span>
-              </div>
               <h3 className="text-2xl md:text-4xl font-black text-white mb-2 tracking-tight">
                 {speaker.name}
               </h3>
-              <p className="text-teal-300 font-bold mb-7 text-lg">{speaker.role}</p>
+              <p className="text-teal-300 font-bold mb-6 text-lg">{speaker.role}</p>
 
-              <div className="space-y-4 mb-9 max-w-xl">
-                <p className="text-navy-100/80 leading-relaxed">{speaker.bioIntro}</p>
-                <p className="text-white/90 leading-relaxed font-medium border-l-2 border-teal-400 pl-4">
-                  {speaker.bioQuote}
-                </p>
-              </div>
+              <p className="text-navy-100/80 leading-relaxed max-w-xl mb-6">
+                {speaker.bioIntro}
+              </p>
 
-              <div className="space-y-4">
-                <h4 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
-                  <span className="w-px h-5 bg-teal-400" aria-hidden />
-                  Destaques profissionais
-                </h4>
+              <blockquote className="text-xl md:text-2xl font-bold text-white leading-snug border-l-2 border-teal-400 pl-4 max-w-xl">
+                {speaker.bioQuote}
+              </blockquote>
+
+              <ul className="space-y-3 mt-9">
                 {speaker.highlights.map((highlight, index) => {
                   const Icon = highlightIcons[index % highlightIcons.length];
                   return (
-                    <div
+                    <li
                       key={highlight}
                       className="flex items-start gap-4 bg-white/[0.06] backdrop-blur rounded-xl p-4 border border-white/5"
                     >
                       <span className="w-10 h-10 rounded-lg bg-teal-500/15 flex items-center justify-center shrink-0">
                         <Icon className="w-5 h-5 text-teal-300" />
                       </span>
-                      <p className="text-navy-50/85">{highlight}</p>
-                    </div>
+                      <span className="text-navy-50/85">{highlight}</span>
+                    </li>
                   );
                 })}
-              </div>
+              </ul>
             </div>
           </Reveal>
         </div>

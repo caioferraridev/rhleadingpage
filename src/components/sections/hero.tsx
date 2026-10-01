@@ -1,10 +1,21 @@
 "use client";
 
 import Image from "next/image";
-import { Calendar, Clock, MapPin, ChevronDown, Users, GraduationCap, Coffee, Sparkles } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  MapPin,
+  ChevronDown,
+  Users,
+  GraduationCap,
+  Coffee,
+  CreditCard,
+  Sparkles,
+} from "lucide-react";
 import { eventConfig } from "@/lib/event-config";
-import { formatPrice, formatDateShort, formatTime } from "@/lib/utils";
+import { formatPrice, formatInstallment, formatDateShort, formatTime } from "@/lib/utils";
 import { SpotsIndicator } from "@/components/ui/spots-indicator";
+import { openRegistration } from "@/lib/registration-cta";
 import type { Event } from "@/types/database";
 
 interface HeroProps {
@@ -14,11 +25,13 @@ interface HeroProps {
 }
 
 export function Hero({ event, isSoldOut, loading }: HeroProps) {
-  const handleCtaClick = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleCtaClick = () => {
     if (isSoldOut) return;
-    document.getElementById("inscricao")?.scrollIntoView({ behavior: "smooth" });
+    openRegistration();
   };
+
+  const total = formatPrice(event.price);
+  const installment = formatInstallment(event.price, eventConfig.installmentMonths);
 
   return (
     <section
@@ -61,7 +74,7 @@ export function Hero({ event, isSoldOut, loading }: HeroProps) {
             </h1>
 
             <p className="text-lg md:text-xl text-navy-600/80 leading-relaxed max-w-xl mb-8">
-              {eventConfig.description}
+              {eventConfig.heroSubtitle}
             </p>
 
             {/* Event meta */}
@@ -94,22 +107,31 @@ export function Hero({ event, isSoldOut, loading }: HeroProps) {
               </div>
             </div>
 
-            {/* Price + CTA */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-              <div className="shrink-0">
-                <p className="text-3xl font-black text-navy">{formatPrice(event.price)}</p>
-                <p className="text-xs font-semibold text-navy-500 uppercase tracking-wide mt-0.5">
-                  Investimento único
+            {/* Price + installment + CTA */}
+            <div className="rounded-2xl border border-navy-100 bg-white/80 backdrop-blur p-5 sm:p-6 mb-5">
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <p className="text-4xl font-black text-navy leading-none">
+                  {eventConfig.installmentMonths}x de {installment}
                 </p>
+                <p className="text-sm font-semibold text-navy-600">no cartão de crédito</p>
               </div>
-              <button
-                onClick={handleCtaClick}
-                className="btn-brand text-base px-7 py-4 w-full sm:w-auto"
-              >
-                {isSoldOut ? "VAGAS ESGOTADAS" : "QUERO GARANTIR MINHA VAGA"}
-                {!isSoldOut && <Users className="w-5 h-5" />}
-              </button>
+              <p className="text-sm font-semibold text-navy-500 mt-2">
+                Total: <span className="text-navy-800">{total}</span>
+              </p>
             </div>
+
+            <button
+              onClick={handleCtaClick}
+              className="btn-brand text-base sm:text-lg w-full sm:w-auto px-7 py-4"
+            >
+              {isSoldOut ? "VAGAS ESGOTADAS" : "GARANTIR MINHA INSCRIÇÃO"}
+              {!isSoldOut && <CreditCard className="w-5 h-5" />}
+            </button>
+
+            <p className="flex items-center gap-2 text-xs text-navy-500 mt-4">
+              <Users className="w-4 h-4 text-teal-600" aria-hidden />
+              Pagamento seguro processado pelo Mercado Pago.
+            </p>
           </div>
 
           {/* Photo column */}
@@ -135,21 +157,6 @@ export function Hero({ event, isSoldOut, loading }: HeroProps) {
                 <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-navy-dark via-navy-dark/60 to-transparent p-6 pt-16">
                   <p className="text-white text-xl font-bold">{eventConfig.speaker.name}</p>
                   <p className="text-teal-200/90 text-sm font-medium">{eventConfig.speaker.role}</p>
-                </div>
-              </div>
-
-              {/* Floating price card */}
-              <div className="absolute -bottom-6 -left-4 sm:left-4 bg-white rounded-2xl border border-navy-100 shadow-xl px-5 py-3.5 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-teal-500/15 flex items-center justify-center">
-                  <Users className="w-5 h-5 text-teal-600" />
-                </div>
-                <div>
-                  <p className="text-[0.7rem] font-bold uppercase tracking-wide text-navy-500">
-                    Vagas limitadas
-                  </p>
-                  <p className="font-black text-navy leading-tight">
-                    {loading ? "..." : isSoldOut ? "Esgotadas" : "Garanta a sua"}
-                  </p>
                 </div>
               </div>
             </div>

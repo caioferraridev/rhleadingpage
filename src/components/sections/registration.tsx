@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Section, SectionTitle } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
 import { AvailabilityNotice } from "@/components/ui/spots-indicator";
@@ -8,10 +8,13 @@ import { CheckoutForm } from "@/components/checkout-form";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
 import { eventConfig } from "@/lib/event-config";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, formatInstallment } from "@/lib/utils";
 import { getWhatsAppLink } from "@/lib/whatsapp";
+import { OPEN_REGISTRATION_EVENT } from "@/lib/registration-cta";
+import { fireInitiateCheckout } from "@/lib/meta-pixel-client";
+import { eventContentId } from "@/lib/tracking";
 import type { Event } from "@/types/database";
-import { ShieldCheck, Sparkles, ArrowLeft, Coffee } from "lucide-react";
+import { ShieldCheck, CreditCard, Sparkles, ArrowLeft, Coffee } from "lucide-react";
 
 interface RegistrationSectionProps {
   event: Event;
@@ -26,6 +29,34 @@ export function RegistrationSection({
 }: RegistrationSectionProps) {
   const [view, setView] = useState<"select" | "checkout" | "waitlist">("select");
   const [notice, setNotice] = useState<string | null>(null);
+
+  const contentId = eventContentId(event.id);
+  const total = formatPrice(event.price);
+  const months = eventConfig.installmentMonths;
+  const installment = formatInstallment(event.price, months);
+
+  // Todos os CTAs da página convergem para cá — mesmo formulário,
+  // mesmo POST /api/checkout, mesmo redirecionamento para o Mercado Pago.
+  const openCheckout = useCallback(() => {
+    if (isSoldOut) {
+      setNotice(null);
+      setView("waitlist");
+      return;
+    }
+
+    fireInitiateCheckout({ valueBRL: event.price / 100, contentIds: [contentId] });
+    setView("checkout");
+  }, [contentId, event.price, isSoldOut]);
+
+  useEffect(() => {
+    const onOpen = () => {
+      setNotice(null);
+      openCheckout();
+    };
+
+    window.addEventListener(OPEN_REGISTRATION_EVENT, onOpen);
+    return () => window.removeEventListener(OPEN_REGISTRATION_EVENT, onOpen);
+  }, [openCheckout]);
 
   const handleCheckout = async (data: { name: string; email: string; phone: string }) => {
     const res = await fetch("/api/checkout", {
@@ -55,32 +86,36 @@ export function RegistrationSection({
 
       <div className="relative">
         <Reveal>
-          <SectionTitle
-            eyebrow="Garanta sua vaga"
-            subtitle="Garanta seu lugar presencialmente. Vagas limitadas."
-          >
-            Pronto para dar o próximo passo?
-          </SectionTitle>
+          <SectionTitle eyebrow="Investimento">Quanto custa a sua inscrição</SectionTitle>
         </Reveal>
 
         <Reveal delay={100}>
           <div className="max-w-2xl mx-auto">
             <div className="rounded-[1.8rem] overflow-hidden shadow-[0_40px_90px_-40px_rgba(1,33,74,0.5)] border border-navy-100 bg-white">
               {/* Top brand band */}
-              <div className="bg-gradient-to-r from-navy via-navy-600 to-navy p-6 md:p-8 text-white text-center">
-                <h3 className="text-xl md:text-2xl font-black tracking-tight">{eventConfig.name}</h3>
-                <p className="text-teal-200/90 text-sm mt-1 font-medium">{eventConfig.tagline}</p>
-                <p className="inline-flex items-center gap-2 mt-3 bg-white/10 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-teal-200">
+              <div className="bg-gradient-to-r from-navy via-navy-600 to-navy p-7 md:p-9 text-white text-center">
+                <p className="inline-flex items-center gap-2 bg-white/10 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-teal-200">
                   <Sparkles className="w-3.5 h-3.5" aria-hidden />
                   Primeira edição · {eventConfig.editionTitle}
                 </p>
 
-                <div className="flex items-baseline justify-center gap-2 mt-5">
-                  <span className="text-5xl font-black">{formatPrice(event.price)}</span>
+                <div className="mt-6 flex items-center justify-center gap-2.5 text-teal-200">
+                  <CreditCard className="w-5 h-5" aria-hidden />
+                  <span className="text-sm font-bold uppercase tracking-wide">
+                    No cartão de crédito
+                  </span>
                 </div>
-                <p className="text-navy-100/70 text-xs uppercase tracking-widest mt-1">
-                  Investimento único
+
+                <p className="mt-2 text-4xl md:text-5xl font-black leading-none">
+                  {months}x de <span className="text-teal-300">{installment}</span>
                 </p>
+
+                <div className="mt-6 pt-5 border-t border-white/15 inline-block">
+                  <p className="text-navy-100/70 text-xs uppercase tracking-widest">
+                    Total da inscrição
+                  </p>
+                  <p className="text-2xl font-black text-white">{total}</p>
+                </div>
               </div>
 
               <div className="p-6 md:p-9">
@@ -103,16 +138,21 @@ export function RegistrationSection({
                         </p>
                         <button
                           onClick={() => setView("waitlist")}
-                          className="btn-teal text-base w-full"
+                          className="btn-teal text-base w-full py-4"
                         >
                           ENTRAR NA LISTA DE ESPERA
                         </button>
                       </div>
                     ) : (
                       <div className="space-y-5">
-                        <button onClick={() => setView("checkout")} className="btn-brand text-lg w-full py-4">
-                          QUERO GARANTIR MINHA VAGA
+                        <button onClick={openCheckout} className="btn-brand text-lg w-full py-5">
+                          INSCREVER-ME AGORA
                         </button>
+
+                        <p className="text-xs text-navy-500 text-center leading-relaxed">
+                          Você preenche seus dados e é redirecionado para o pagamento seguro do
+                          Mercado Pago, onde escolhe entre as opções de parcelamento disponíveis.
+                        </p>
 
                         <div className="border-t border-navy-100 pt-5 text-center">
                           <p className="text-sm font-semibold text-navy-500 mb-3">
@@ -135,10 +175,10 @@ export function RegistrationSection({
                             <ShieldCheck className="w-4 h-4 text-teal-600" /> Pagamento seguro
                           </div>
                           <div className="flex items-center gap-1.5 justify-center">
-                            <Coffee className="w-4 h-4 text-teal-600" /> Coffee Break incluso
+                            <Coffee className="w-4 h-4 text-teal-600" /> Coffee break incluso
                           </div>
                           <div className="flex items-center gap-1.5 justify-center">
-                            <Sparkles className="w-4 h-4 text-teal-600" /> Conteúdo exclusivo
+                            <Sparkles className="w-4 h-4 text-teal-600" /> Certificado
                           </div>
                         </div>
                       </div>

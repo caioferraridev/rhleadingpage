@@ -10,7 +10,9 @@ import { EventInfo } from "@/components/sections/event-info";
 import { RegistrationSection } from "@/components/sections/registration";
 import { FAQ } from "@/components/sections/faq";
 import { MobileStickyCta } from "@/components/mobile-sticky-cta";
+import { ViewContentTracker } from "@/components/view-content-tracker";
 import { eventConfig } from "@/lib/event-config";
+import { eventContentId } from "@/lib/tracking";
 import { jsonLdSafe } from "@/lib/security";
 import { SITE_URL } from "@/lib/site-url";
 
@@ -72,26 +74,31 @@ export default async function HomePage() {
   return (
     <>
       <Header />
-      <main className="flex-1 pb-20 md:pb-0">
+      <main className="flex-1 pb-24 md:pb-0">
         <Hero
           event={event}
           isSoldOut={isSoldOut}
           loading={loading}
         />
         <About />
-        <Experience />
         <WhoFor />
-        <Speaker />
+        <Experience />
         <EventInfo event={event} />
+        <Speaker />
         <RegistrationSection
           event={event}
           isSoldOut={isSoldOut}
           loading={loading}
         />
-        <FAQ />
+        <FAQ event={event} />
       </main>
       <Footer />
       <MobileStickyCta />
+
+      <ViewContentTracker
+        valueBRL={event.price / 100}
+        contentId={eventContentId(event.id)}
+      />
 
       <script
         type="application/ld+json"

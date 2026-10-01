@@ -7,6 +7,16 @@ export const eventConfig = {
   // First experience launched by the Academia RH brand
   editionTitle: "Recrutamento e Seleção na Prática",
 
+  // Short pitch used above the fold (the long `description` below stays as
+  // the fallback metadata text — it is never rendered in the interface).
+  heroSubtitle:
+    "Treinamento presencial de Recrutamento e Seleção na prática — do perfil da vaga à avaliação de candidatos, com Talita Maia.",
+
+  // Copy da seção "O que é a Academia RH" (resumido para leitura rápida)
+  aboutStatement: "Aprender. Praticar. Transformar.",
+  aboutText:
+    "A Academia RH nasceu de anos de atuação em Recursos Humanos e da vontade de compartilhar o que realmente funciona na prática. A proposta é criar experiências de aprendizagem que aproximam o conhecimento dos desafios do dia a dia — e este treinamento foi pensado para quem quer mais preparo para lidar com pessoas e processos de contratação.",
+
   // Structured data (JSON-LD) — campos opcionais do schema de Event
   schema: {
     description:
@@ -26,6 +36,7 @@ export const eventConfig = {
 
   // Pricing & Capacity
   price: 28900, // R$ 289,00 em centavos
+  installmentMonths: 12, // 12x de R$ 24,08 no cartão de crédito
   capacity: 50,
 
   // WhatsApp
@@ -41,9 +52,9 @@ export const eventConfig = {
     name: "Talita Maia",
     role: "Administradora · Especialista em Gestão de Pessoas",
     bioIntro:
-      "Sou profissional de Recursos Humanos, Administradora e Especialista em Gestão de Pessoas, com mais de 20 anos de experiência na área. Ao longo da minha trajetória, atuei em diferentes segmentos e nos principais subsistemas de RH, desenvolvendo experiência em Recrutamento e Seleção, Desenvolvimento de Pessoas, Liderança e Gestão Estratégica de Pessoas.",
+      "Administradora e Especialista em Gestão de Pessoas, com mais de 20 anos de atuação em RH nos principais subsistemas: Recrutamento e Seleção, Desenvolvimento de Pessoas, Liderança e Gestão Estratégica.",
     bioQuote:
-      "Acredito que o RH tem o poder de transformar profissionais, empresas e resultados. Por isso, através da Academia RH, compartilho conhecimento e experiência de forma prática, contribuindo para a formação de profissionais mais preparados e para uma gestão de pessoas mais estratégica e humana.",
+      "O RH tem o poder de transformar profissionais, empresas e resultados.",
     highlights: [
       "Mais de 20 anos de experiência em RH",
       "Administradora e Especialista em Gestão de Pessoas",
@@ -56,46 +67,56 @@ export const eventConfig = {
   // Benefits — what the participant takes away from this experience
   benefits: [
     {
-      title: "Conhecimento Prático",
+      title: "Conhecimento prático",
       description: "Aprendizado conectado à realidade do mercado.",
     },
     {
       title: "Networking",
-      description: "Oportunidade de conhecer e trocar experiências com outros profissionais.",
+      description: "Convívio com outros profissionais da área.",
     },
     {
-      title: "Novos Insights",
-      description: "Ideias e perspectivas para aplicar na sua atuação profissional.",
+      title: "Novos insights",
+      description: "Ideias e perspectivas para aplicar na sua atuação.",
     },
     {
-      title: "Desenvolvimento Profissional",
+      title: "Desenvolvimento profissional",
       description: "Mais preparo e segurança para os desafios da carreira.",
     },
     {
-      title: "Certificado de Participação",
-      description: "Registro da sua participação em uma experiência de capacitação profissional.",
+      title: "Certificado de participação",
+      description: "Registro da sua participação no treinamento.",
     },
     {
-      title: "Coffee Break",
-      description: "Um momento para fazer uma pausa, conversar e trocar experiências durante o encontro.",
+      title: "Coffee break",
+      description: "Uma pausa para conversar e trocar experiências.",
     },
   ],
 
   // Who is it for
   targetAudience: [
-    "Você trabalha com RH e quer aprimorar seus conhecimentos em Recrutamento e Seleção?",
-    "Está começando na área de Recursos Humanos e quer aprender, na prática, como funciona um processo seletivo?",
-    "Você é gestor, líder ou empreendedor e participa da contratação de pessoas na sua empresa?",
-    "Não trabalha diretamente com RH ou gestão, mas quer aprender a lidar melhor com pessoas e entender mais sobre processos de contratação?",
-    "Quer desenvolver uma visão mais prática sobre como identificar, avaliar e selecionar profissionais?",
-    "Estudantes de Administração, Psicologia ou áreas afins que buscam se preparar para o mercado de trabalho?",
+    {
+      title: "Profissionais de RH",
+      description: "Querem aprofundar conhecimentos em Recrutamento e Seleção.",
+    },
+    {
+      title: "Iniciantes na área",
+      description: "Querem aprender na prática como funciona um processo seletivo.",
+    },
+    {
+      title: "Gestores, líderes e empreendedores",
+      description: "Participam da contratação de pessoas na empresa.",
+    },
+    {
+      title: "Profissionais fora do RH",
+      description: "Querem lidar melhor com pessoas e com a contratação.",
+    },
+    {
+      title: "Quem quer selecionar melhor",
+      description: "Busca uma visão prática sobre identificar e avaliar talentos.",
+    },
+    {
+      title: "Estudantes de Administração e Psicologia",
+      description: "Querem se preparar para o mercado de trabalho.",
+    },
   ],
-
-  // Urgency messages
-  getUrgencyMessage: (spotsLeft: number) => {
-    if (spotsLeft <= 0) return "Vagas esgotadas";
-    if (spotsLeft <= 10) return "Últimas vagas disponíveis!";
-    if (spotsLeft <= 20) return "Vagas limitadas";
-    return "Vagas limitadas a 50 participantes";
-  },
 } as const;
