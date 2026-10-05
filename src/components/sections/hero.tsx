@@ -147,9 +147,13 @@ export function Hero({ event, isSoldOut, loading }: HeroProps) {
                   src={eventConfig.speaker.imageUrl}
                   alt={eventConfig.speaker.imageAlt}
                   fill
-                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  /* O container é max-w-sm (384px) no mobile e ~40% da coluna
+                     no desktop — não 100vw. Declarar 100vw fazia o browser
+                     subir um degrau no srcset e baixar imagem maior que a usada. */
+                  sizes="(max-width: 1023px) min(384px, calc(100vw - 2rem)), 40vw"
                   className="object-cover"
-                  priority
+                  fetchPriority="high"
+                  loading="eager"
                 />
                 {/* Brand overlay label */}
                 <div className="absolute top-4 left-4">

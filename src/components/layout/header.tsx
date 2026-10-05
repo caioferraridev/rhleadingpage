@@ -37,7 +37,7 @@ export function Header() {
     >
       <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 md:h-[4.5rem] flex items-center justify-between">
         <a href="#topo" onClick={(e) => scrollTo(e, "#topo")} aria-label="Academia RH - início">
-          <BrandLogo className="h-8 md:h-9" />
+          <BrandLogo className="h-8 md:h-9" eager />
         </a>
 
         <div className="hidden md:flex items-center gap-7">

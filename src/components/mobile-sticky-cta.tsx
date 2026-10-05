@@ -4,11 +4,20 @@ import { useEventAvailability } from "@/lib/hooks/use-event-availability";
 import { formatPrice } from "@/lib/utils";
 import { eventConfig } from "@/lib/event-config";
 import { openRegistration } from "@/lib/registration-cta";
+import type { EventAvailability } from "@/types/database";
 
-export function MobileStickyCta() {
-  const { data, loading } = useEventAvailability();
+interface MobileStickyCtaProps {
+  /**
+   * Disponibilidade resolvida no servidor. Injeta o mesmo objeto que a página
+   * já tem em mãos, para o botão existir no HTML do primeiro paint.
+   */
+  initialData: EventAvailability;
+}
+
+export function MobileStickyCta({ initialData }: MobileStickyCtaProps) {
+  const { data, loading } = useEventAvailability(initialData);
   const isSoldOut = data?.is_sold_out ?? false;
-  const price = data?.event?.price ?? eventConfig.price;
+  const price = data?.event?.price ?? initialData.event.price;
 
   const handleClick = () => {
     if (isSoldOut) {
@@ -23,7 +32,9 @@ export function MobileStickyCta() {
       {/* Brand accent line */}
       <div className="h-1 w-full bg-gradient-to-r from-navy via-navy-600 to-teal-500" aria-hidden />
       <div className="bg-white/95 backdrop-blur border-t border-navy-100 px-3 py-2.5 shadow-[0_-6px_24px_-12px_rgba(1,33,74,0.3)]">
-        {loading ? (
+        {loading && !data ? (
+          /* Placeholder só existe quando não há dado do servidor (ex.: erro de
+             hidratação). Nunca exibe preço nem condição comercial presumida. */
           <div className="h-12" aria-hidden />
         ) : isSoldOut ? (
           <button onClick={handleClick} className="w-full btn-teal text-sm py-3.5">

@@ -34,7 +34,9 @@ export function Speaker() {
                   src={speaker.imageUrl}
                   alt={speaker.imageAlt}
                   fill
-                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  /* Container é max-w-md (448px) no mobile e ~0.8/2 da coluna
+                     no desktop. Sección abaixo da dobra: lazy por padrão. */
+                  sizes="(max-width: 1023px) min(448px, calc(100vw - 2rem)), 30vw"
                   className="object-cover"
                 />
               </div>

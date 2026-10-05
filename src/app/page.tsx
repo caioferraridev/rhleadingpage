@@ -93,7 +93,7 @@ export default async function HomePage() {
         <FAQ event={event} />
       </main>
       <Footer />
-      <MobileStickyCta />
+      <MobileStickyCta initialData={{ event, is_sold_out: isSoldOut }} />
 
       <ViewContentTracker
         valueBRL={event.price / 100}
